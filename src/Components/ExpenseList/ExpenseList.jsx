@@ -32,16 +32,16 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
         <li key={index}>
           {editingIndex === index ? (
             <div>
-              <input type="text" name="name" value={currentExpense.name} onChange={handleChange} placeholder="Expense Name" required />
-              <input type="number" name="amount" value={currentExpense.amount} onChange={handleChange} placeholder="Amount" required />
+              {/* <input type="text" name="name" value={currentExpense.name} onChange={handleChange} placeholder="Expense Name" required /> */}
               <input type="text" name="category" value={currentExpense.category} onChange={handleChange} placeholder="Category" required />
+              <input type="number" name="amount" value={currentExpense.amount} onChange={handleChange} placeholder="Amount" required />
               <input type="date" name="date" value={currentExpense.date} onChange={handleChange} required />
               <input type="date" name="dueDate" value={currentExpense.dueDate} onChange={handleChange} required />
               <button onClick={handleSave}>Save</button>
             </div>
           ) : (
             <div>
-              <strong>{expense.name}</strong> - ${expense.amount} - {expense.category}
+              <strong>{currentExpense.category}</strong> - ${expense.amount} - {expense.category}
               <div>Added Date: <strong>{expense.date}</strong></div>
               <div>Due Date: <strong>{expense.dueDate}</strong></div>
               <button onClick={() => startEditing(index, expense)}>Edit</button>
