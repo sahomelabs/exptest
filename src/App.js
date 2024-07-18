@@ -30,12 +30,19 @@ const App = () => {
     setExpenses(newExpenses);
   };
 
+
+  const deleteExpense = (index) => {
+    const updatedExpenses = expenses.filter((expense, i) => i !== index);
+    setExpenses(updatedExpenses);
+  };
+
+
   return (
     <div className="App">
       <Header />
       <IncomeForm setIncome={setIncome} />
       <ExpenseForm addExpense={addExpense} />
-      <ExpenseList expenses={expenses} editExpense={editExpense}/>
+      <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense}/>
       <Summary income={income} expenses={expenses} />
       <Footer />
     </div>
