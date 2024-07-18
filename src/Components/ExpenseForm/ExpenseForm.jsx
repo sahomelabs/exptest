@@ -52,14 +52,14 @@ const ExpenseForm = ({ addExpense }) => {
 
       </select>
       
-      <input
+      {/* <input
         type="text"
         name="name"
         value={expense.name}
         onChange={handleChange}
         placeholder="Expense Name"
         required
-      />
+      /> */}
       <input
         type="number"
         name="amount"
