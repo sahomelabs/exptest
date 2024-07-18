@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 const ExpenseForm = ({ addExpense }) => {
-  const [expense, setExpense] = useState({ name: '', amount: '', category: '', date: '' });
+  const [expense, setExpense] = useState({ name: '', amount: '', category: '', date: '', dueDate: '' });
 
   const handleChange = (e) => {
     setExpense({ ...expense, [e.target.name]: e.target.value });
@@ -11,7 +11,7 @@ const ExpenseForm = ({ addExpense }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     addExpense(expense);
-    setExpense({ name: '', amount: '', category: '', date: '' });
+    setExpense({ name: '', amount: '', category: '', date: '', dueDate: ''});
   };
 
   return (
@@ -20,6 +20,7 @@ const ExpenseForm = ({ addExpense }) => {
       <input type="number" name="amount" value={expense.amount} onChange={handleChange} placeholder="Amount" required />
       <input type="text" name="category" value={expense.category} onChange={handleChange} placeholder="Category" required />
       <input type="date" name="date" value={expense.date} onChange={handleChange} required />
+      <input type='date' name='dueDate' value={expense.dueDate} onChange={handleChange} placeholder='Due Date' required />
       <button type="submit">Add Expense</button>
     </form>
   );
