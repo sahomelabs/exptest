@@ -16,27 +16,7 @@ const ExpenseForm = ({ addExpense }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-
-
-
-
       
-      <input
-        type="text"
-        name="name"
-        value={expense.name}
-        onChange={handleChange}
-        placeholder="Expense Name"
-        required
-      />
-      <input
-        type="number"
-        name="amount"
-        value={expense.amount}
-        onChange={handleChange}
-        placeholder="Amount"
-        required
-      />
       <select
         name="category"
         value={expense.category}
@@ -71,6 +51,23 @@ const ExpenseForm = ({ addExpense }) => {
 
 
       </select>
+      
+      <input
+        type="text"
+        name="name"
+        value={expense.name}
+        onChange={handleChange}
+        placeholder="Expense Name"
+        required
+      />
+      <input
+        type="number"
+        name="amount"
+        value={expense.amount}
+        onChange={handleChange}
+        placeholder="Amount"
+        required
+      />
       <input
         type="date"
         name="date"
