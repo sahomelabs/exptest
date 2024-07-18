@@ -1,7 +1,7 @@
 // src/components/ExpenseList.jsx
 import React, { useState } from 'react';
 
-const ExpenseList = ({ expenses, editExpense }) => {
+const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [currentExpense, setCurrentExpense] = useState({ name: '', amount: '', category: '', date: '', dueDate: '' });
 
@@ -18,6 +18,10 @@ const ExpenseList = ({ expenses, editExpense }) => {
     editExpense(editingIndex, currentExpense);
     setEditingIndex(null);
     setCurrentExpense({ name: '', amount: '', category: '', date: '', dueDate: '' });
+  };
+
+  const handleDelete = (index) => {
+  deleteExpense(index);
   };
 
   return (
@@ -39,6 +43,7 @@ const ExpenseList = ({ expenses, editExpense }) => {
               <div>Added Date: <strong>{expense.date}</strong></div>
               <div>Due Date: <strong>{expense.dueDate}</strong></div>
               <button onClick={() => startEditing(index, expense)}>Edit</button>
+              <button onClick={() => handleDelete(index)}>Delete</button>
             </div>
           )}
         </li>
