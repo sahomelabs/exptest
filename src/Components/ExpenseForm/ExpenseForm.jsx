@@ -19,8 +19,14 @@ const ExpenseForm = ({ addExpense }) => {
       <input type="text" name="name" value={expense.name} onChange={handleChange} placeholder="Expense Name" required />
       <input type="number" name="amount" value={expense.amount} onChange={handleChange} placeholder="Amount" required />
       <input type="text" name="category" value={expense.category} onChange={handleChange} placeholder="Category" required />
+      <label>
+        Added Date:
       <input type="date" name="date" value={expense.date} onChange={handleChange} required />
+      </label>
+      <label>
+        Due Date: 
       <input type='date' name='dueDate' value={expense.dueDate} onChange={handleChange} placeholder='Due Date' required />
+      </label>
       <button type="submit">Add Expense</button>
     </form>
   );
