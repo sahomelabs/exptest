@@ -27,7 +27,7 @@ const ExpenseForm = ({ addExpense }) => {
         <optgroup label="HOUSING">
           <option value="Mortgage">Mortgage</option>
           <option value="Rent">Rent</option>
-          <option value="Phone Number">Phone Number</option>
+          <option value="Phone Bill">Phone Number</option>
           <option value="Electricity">Electricity</option>
           <option value="Gas">Gas</option>
           <option value="Water and sewer">Water and sewer</option>
@@ -37,6 +37,47 @@ const ExpenseForm = ({ addExpense }) => {
           <option value="Supplies">Supplies</option>
           <option value="Other">Other</option>
         </optgroup>
+
+
+        <optgroup label='FOOD'>
+            <option value="FoodandDrink">FoodandDrink</option> 
+            <option value="Dining out">Dining Out"</option> 
+            <option value="Other">Other</option> 
+        </optgroup>
+
+        <optgroup label="CREDIT CARD"> 
+            <option value="CapitalOne">CapitalOne</option> 
+            <option value="BankofAmerica">BankofAmerica</option> 
+            <option value="WellsFargo">WellsFargo</option> 
+            <option value="Citi">Citi</option> 
+            <option value="American Express">American Express</option> 
+            <option value="Discover">Discover</option> 
+            <option value="CreditOne">CreditOne</option> 
+            <option value="Chase">Chase</option> 
+            <option value="Chase Bussiness">Chase Bussiness</option> 
+        </optgroup>
+           
+        <optgroup label="TRANSPORT"> 
+            <option value="Autoloan">AutoLoan</option> 
+            <option value="CarInsurance">Car Insurance</option> 
+            <option value="Gas-Fuel">Gas/Fuel</option> 
+            <option value="Maintenance">Car Maintenance</option> 
+            <option value="Others">Others</option> 
+            <option value="EzPass">EzPass</option>
+            <option value="PublicTrans">Public Trans</option>
+        </optgroup>
+
+
+        <optgroup label='Pay in 4'>
+            <option value="Affirm">Affirm</option> 
+            <option value="Klarna">Klarna"</option> 
+            <option value="Apple TV Plus">Paypal</option> 
+            <option value="Paramount">Afterpay</option> 
+            <option value="Other">Other</option> 
+        </optgroup>
+
+
+
         <optgroup label="ENTERTAINMENT"> 
             <option value="Netflixt">Netflix</option> 
             <option value="Hulu">Hulu</option> 
