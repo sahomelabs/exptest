@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, {  useState, useEffect } from 'react';
 import Header from './Components/Header/Header';
 import ExpenseForm from './Components/ExpenseForm/ExpenseForm';
 import IncomeForm from './Components/IncomeForm/IncomeForm';
@@ -12,13 +12,22 @@ const App = () => {
   const [income, setIncome] = useState(0);
   const [expenses, setExpenses] = useState([]);
 
+  useEffect(() => {
+    const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
+    setExpenses(savedExpenses);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+  }, [expenses]);
+
   const addExpense = (expense) => {
     setExpenses([...expenses, expense]);
   };
 
   const editExpense = (index, updatedExpense) => {
-    const newExpense = expenses.map((expense, i) => (i === index ? updatedExpense : expense));
-    setExpenses(newExpense);
+    const newExpenses = expenses.map((expense, i) => (i === index ? updatedExpense : expense));
+    setExpenses(newExpenses);
   };
 
   return (
