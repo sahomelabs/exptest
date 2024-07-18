@@ -6,7 +6,9 @@ const ExpenseList = ({ expenses }) => {
     <ul>
       {expenses.map((expense, index) => (
         <li key={index}>
-          {expense.name} - ${expense.amount} - {expense.category} - {expense.date}
+          <strong>{expense.name} </strong> - ${expense.amount} - {expense.category}
+          <div> Added Date: <strong>{expense.date}</strong></div> 
+          <div>Bill Due Date: <strong>{expense.dueDate}</strong></div>
         </li>
       ))}
     </ul>
