@@ -16,12 +16,17 @@ const App = () => {
     setExpenses([...expenses, expense]);
   };
 
+  const editExpense = (index, updatedExpense) => {
+    const newExpense = expenses.map((expense, i) => (i === index ? updatedExpense : expense));
+    setExpenses(newExpense);
+  };
+
   return (
     <div className="App">
       <Header />
       <IncomeForm setIncome={setIncome} />
       <ExpenseForm addExpense={addExpense} />
-      <ExpenseList expenses={expenses} />
+      <ExpenseList expenses={expenses} editExpense={editExpense}/>
       <Summary income={income} expenses={expenses} />
       <Footer />
     </div>
