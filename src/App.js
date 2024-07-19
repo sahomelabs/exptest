@@ -11,6 +11,8 @@ import Footer from './Components/Footer/Footer';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import TermsOfUse from './Pages/TermsofUse/TermsOfUse';
 import Privacy from './Pages/Privacy/Privacy';
+import SignIn from './Components/SignIn/SignIn';
+import SignOut from './Components/SignOut/SignOut';
 import './App.css';
 
 const App = () => {
@@ -45,24 +47,27 @@ const App = () => {
   return (
     <Router>
     <div className="App">
-      <Navbar />
       <Header />
+      <Navbar isAuthenticated={isAuthenticated}/>
       <Routes>
 
       <Route path="/" element={
-        <div>
-      
+        isAuthenticated ? (
+        <>
       <IncomeForm setIncome={setIncome} />
       <ExpenseForm addExpense={addExpense} />
       <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense}/>
       <Summary income={income} expenses={expenses} />
-      </div>
-      }
-      />
-          
+      </>
+            ) : (
+              <SignIn setIsAuthenticated={setIsAuthenticated} />
+            )
+      } />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/signout" element={<SignOut setIsAuthenticated={setIsAuthenticated} />} />
         </Routes>
       <Footer />
     </div>
