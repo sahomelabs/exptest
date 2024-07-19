@@ -1,6 +1,7 @@
 // src/App.jsx
 import React, {  useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './Components/Navbar/Navbar';
 import Header from './Components/Header/Header';
 import ExpenseForm from './Components/ExpenseForm/ExpenseForm';
 import IncomeForm from './Components/IncomeForm/IncomeForm';
@@ -44,6 +45,7 @@ const App = () => {
   return (
     <Router>
     <div className="App">
+      <Navbar />
       <Header />
       <Routes>
 
