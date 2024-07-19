@@ -134,6 +134,7 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
                 name="date"
                 value={currentExpense.date}
                 onChange={handleChange}
+                readOnly
                 required
               />
               <input
@@ -157,7 +158,7 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
                 <strong>Amount:</strong> ${expense.amount}
               </div>
               <div>
-                <strong>Date:</strong> {expense.date}
+                <strong>Date Added:</strong> {expense.date}
               </div>
               <div>
                 <strong>Due Date:</strong> {expense.dueDate}
