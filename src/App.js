@@ -67,6 +67,7 @@ const App = () => {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signout" element={<SignOut setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} /> {/* Add the SignUp route */}
         </Routes>
       <Footer />
     </div>
