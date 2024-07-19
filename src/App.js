@@ -28,7 +28,11 @@ const App = () => {
 
   useEffect(() => {
     localStorage.setItem('expenses', JSON.stringify(expenses));
-  }, [expenses]);
+    if (isAuthenticated) {
+      // backend save logic
+      console.log('Saving data to backend...', expenses);
+    }
+  }, [expenses, isAuthenticated]);
 
   const addExpense = (expense) => {
     setExpenses([...expenses, expense]);
