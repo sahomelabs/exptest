@@ -1,5 +1,6 @@
 // src/App.jsx
 import React, {  useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Components/Header/Header';
 import ExpenseForm from './Components/ExpenseForm/ExpenseForm';
 import IncomeForm from './Components/IncomeForm/IncomeForm';
@@ -8,7 +9,7 @@ import Summary from './Components/Summary/Summary';
 import Footer from './Components/Footer/Footer';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import TermsOfUse from './Pages/TermsofUse/TermsOfUse';
-import Privacy from './Pages/Privacy';
+import Privacy from './Pages/Privacy/Privacy';
 import './App.css';
 
 const App = () => {
@@ -44,18 +45,23 @@ const App = () => {
     <Router>
     <div className="App">
       <Header />
-      <Switch>
-        <Route path="/" exact>
+      <Routes>
+
+      <Route path="/" element={
+        <div>
+      
       <IncomeForm setIncome={setIncome} />
       <ExpenseForm addExpense={addExpense} />
       <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense}/>
       <Summary income={income} expenses={expenses} />
-      
-      </Route>
-          <Route path="/terms-of-use" component={TermsOfUse} />
-          <Route path="/contactus" component={ContactUs} />
-          <Route path="/privacy" component={Privacy} />
-        </Switch>
+      </div>
+      }
+      />
+          
+          <Route path="/terms-of-use" element={<TermsOfUse />} />
+          <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/privacy" element={<Privacy />} />
+        </Routes>
       <Footer />
     </div>
     </Router>
