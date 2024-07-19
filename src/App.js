@@ -53,9 +53,9 @@ const App = () => {
 
   return (
     <Router>
+            <Navbar isAuthenticated={isAuthenticated}/>
     <div className="App">
       <Header />
-      <Navbar isAuthenticated={isAuthenticated}/>
       <Routes>
 
       <Route path="/" element={
