@@ -25,9 +25,23 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
     }
   };
 
+  const groupedExpenses = expenses.reduce((acc, expense) => {
+    const { categoryGroup } = expense;
+    if (!acc[categoryGroup]) {
+      acc[categoryGroup] = [];
+    }
+    acc[categoryGroup].push(expense);
+    return acc;
+  }, {});
+
+
   return (
-    <ul>
-      {expenses.map((expense, index) => (
+    <div>
+    {Object.entries(groupedExpenses).map(([categoryGroup, groupExpenses], groupIndex) => (
+      <div key={groupIndex}>
+        <h3>{categoryGroup}</h3>
+        <ul>
+          {groupExpenses.map((expense, index) => (
         <li key={index}>
           {editingIndex === index ? (
             <div>
@@ -170,6 +184,9 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
         </li>
       ))}
     </ul>
+    </div>
+    ))}
+    </div>
   );
 };
 
