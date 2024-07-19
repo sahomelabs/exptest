@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 const ExpenseForm = ({ addExpense }) => {
   const [expense, setExpense] = useState({ name: '', amount: '', categoryGroup: '', category: '', date: '', dueDate: '' });
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setExpense({ ...expense, [e.target.name]: e.target.value });
@@ -9,6 +10,15 @@ const ExpenseForm = ({ addExpense }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const currentDate = new Date().toISOString().split('T')[0];
+
+    if (expense.date !== currentDate) {
+      setError('Date added must be the current date.');
+      return;
+    }
+    setError('');
+
+
     addExpense(expense);
     setExpense({ name: '', amount: '', categoryGroup: '', category: '', date: '', dueDate: '' });
   };
@@ -132,6 +142,8 @@ const ExpenseForm = ({ addExpense }) => {
         onChange={handleChange}
         required
       />
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+
       <button type="submit">Add Expense</button>
     </form>
   );
