@@ -6,6 +6,9 @@ import IncomeForm from './Components/IncomeForm/IncomeForm';
 import ExpenseList from './Components/ExpenseList/ExpenseList';
 import Summary from './Components/Summary/Summary';
 import Footer from './Components/Footer/Footer';
+import ContactUs from './Pages/ContactUs/ContactUs';
+import TermsOfUse from './Pages/TermsofUse/TermsOfUse';
+import Privacy from './Pages/Privacy';
 import './App.css';
 
 const App = () => {
@@ -38,14 +41,24 @@ const App = () => {
 
 
   return (
+    <Router>
     <div className="App">
       <Header />
+      <Switch>
+        <Route path="/" exact>
       <IncomeForm setIncome={setIncome} />
       <ExpenseForm addExpense={addExpense} />
       <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense}/>
       <Summary income={income} expenses={expenses} />
+      
+      </Route>
+          <Route path="/terms-of-use" component={TermsOfUse} />
+          <Route path="/contactus" component={ContactUs} />
+          <Route path="/privacy" component={Privacy} />
+        </Switch>
       <Footer />
     </div>
+    </Router>
   );
 };
 
