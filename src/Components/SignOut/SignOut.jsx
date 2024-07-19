@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './SignOut.css';
 
 const SignOut = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
