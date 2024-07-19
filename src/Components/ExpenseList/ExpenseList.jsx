@@ -54,7 +54,8 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
                 <option value="">Select Category</option>
                 {currentExpense.categoryGroup === 'HOUSING' && (
                   <>
-                    <option value="Mortgage rent">Mortgage rent</option>
+                    <option value="Mortgage">Mortgage</option>
+                    <option value="Rent">Rent</option>
                     <option value="Phone Number">Phone Number</option>
                     <option value="Electricity">Electricity</option>
                     <option value="Gas">Gas</option>

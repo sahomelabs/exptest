@@ -38,8 +38,10 @@ const ExpenseForm = ({ addExpense }) => {
         <option value="">Select Category</option>
         {expense.categoryGroup === 'HOUSING' && (
           <>
-            <option value="Mortgage rent">Mortgage rent</option>
-            <option value="Phone Number">Phone Number</option>
+            <option value="Mortgage">Mortgage</option>
+            <option value="Rent">Rent</option>
+            <option value="Internet">Internet</option>
+            <option value="Phone Bill">Phone Bill</option>
             <option value="Electricity">Electricity</option>
             <option value="Gas">Gas</option>
             <option value="Water and sewer">Water and sewer</option>
@@ -76,9 +78,9 @@ const ExpenseForm = ({ addExpense }) => {
             <option value="Car Insurance">Car Insurance</option>
             <option value="Gas/Fuel">Gas/Fuel</option>
             <option value="Maintenance">Car Maintenance</option>
-            <option value="Others">Others</option>
             <option value="EzPass">EzPass</option>
             <option value="Public Transport">Public Transport</option>
+            <option value="Others">Others</option>
           </>
         )}
         {expense.categoryGroup === 'PAY-IN-4' && (
