@@ -10,7 +10,9 @@ const Navbar = ({isAuthenticated}) => {
         {isAuthenticated ? (
           <li><Link to="/signout">Sign Out</Link></li>
         ) : (
-          <li><Link to="/signin">Sign In</Link></li>
+          <li><Link to="/signin">Sign In</Link>
+          <Link to="/signup">Sign Up</Link>
+          </li>
         )}
       </ul>
     </nav>
