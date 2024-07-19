@@ -13,6 +13,7 @@ import TermsOfUse from './Pages/TermsofUse/TermsOfUse';
 import Privacy from './Pages/Privacy/Privacy';
 import SignIn from './Components/SignIn/SignIn';
 import SignOut from './Components/SignOut/SignOut';
+import SignUp from './Components/SignUp/SignUp';
 import './App.css';
 
 const App = () => {
