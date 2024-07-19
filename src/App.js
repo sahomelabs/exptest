@@ -18,6 +18,8 @@ import './App.css';
 const App = () => {
   const [income, setIncome] = useState(0);
   const [expenses, setExpenses] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
 
   useEffect(() => {
     const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
@@ -52,16 +54,13 @@ const App = () => {
       <Routes>
 
       <Route path="/" element={
-        isAuthenticated ? (
         <>
       <IncomeForm setIncome={setIncome} />
       <ExpenseForm addExpense={addExpense} />
       <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense}/>
       <Summary income={income} expenses={expenses} />
       </>
-            ) : (
-              <SignIn setIsAuthenticated={setIsAuthenticated} />
-            )
+            
       } />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/contactus" element={<ContactUs />} />
