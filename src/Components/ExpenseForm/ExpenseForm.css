@@ -1,0 +1,62 @@
+/* ExpenseForm.css */
+
+.expense-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    text-align: center;
+  }
+  
+  .expense-form select,
+  .expense-form input[type="number"],
+  .expense-form input[type="date"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+  }
+  
+  .expense-form .amount-input-container {
+    position: relative;
+  }
+  
+  .expense-form .dollar-sign {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: #333;
+  }
+  
+  .expense-form .amount-input {
+    padding-left: 25px;
+  }
+  
+  .expense-form button {
+    background-color: #013111af;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .expense-form button:hover {
+    background-color: #005b29;
+  }
+  
+  .expense-form p {
+    color: red;
+    font-size: 0.9em;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+  

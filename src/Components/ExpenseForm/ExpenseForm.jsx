@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './ExpenseForm.css';
 
 const ExpenseForm = ({ addExpense }) => {
   const [expense, setExpense] = useState({ name: '', amount: '', categoryGroup: '', category: '', date: '', dueDate: '' });
@@ -24,7 +25,7 @@ const ExpenseForm = ({ addExpense }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="expense-form" onSubmit={handleSubmit}>
       <select
         name="categoryGroup"
         value={expense.categoryGroup}
@@ -117,7 +118,6 @@ const ExpenseForm = ({ addExpense }) => {
         )}
       </select>
       <div className="amount-input-container">
-        <span className="dollar-sign">$</span>
         <input
           type="number"
           name="amount"
