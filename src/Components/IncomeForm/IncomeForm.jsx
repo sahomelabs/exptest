@@ -1,6 +1,7 @@
 //IncomeForm.jsx
 
 import React, { useState } from 'react';
+import './IncomeForm.css';
 
 const IncomeForm = ({ setIncome }) => {
   const [incomeInput, setIncomeInput] = useState('');
@@ -16,7 +17,7 @@ const IncomeForm = ({ setIncome }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="income-form" onSubmit={handleSubmit}>
       <input 
         type="number" 
         value={incomeInput} 
@@ -24,7 +25,7 @@ const IncomeForm = ({ setIncome }) => {
         placeholder="Enter your income" 
         required 
       />
-      <button type="submit">Set Income</button>
+      <button type="submit">Add Income</button>
     </form>
   );
 };
