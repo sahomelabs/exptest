@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './ExpenseList.css';
 
 const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
   const [editingIndex, setEditingIndex] = useState(null);
@@ -39,7 +40,7 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
   };
 
   return (
-    <div>
+    <div className='expense-list'>
       {Object.entries(groupedExpenses).map(([categoryGroup, groupExpenses], groupIndex) => (
         <div key={groupIndex}>
           <h3>{categoryGroup}</h3>
