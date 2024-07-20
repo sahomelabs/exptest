@@ -8,11 +8,16 @@ const Navbar = ({isAuthenticated}) => {
       <ul>
         <li><Link to="/">Home</Link></li>
         {isAuthenticated ? (
+          <>
+          
           <li><Link to="/signout">Sign Out</Link></li>
+          </>
         ) : (
+          <>
           <li><Link to="/signin">Sign In</Link>
           <Link to="/signup">Sign Up</Link>
           </li>
+          </>
         )}
       </ul>
     </nav>
