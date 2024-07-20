@@ -13,8 +13,6 @@ Frontend: React, CSS
 Backend: Node.js, Express
 Database: MongoDB
 Folder Structure
-arduino
-Copy code
 project-root/
 ├── backend/
 │   ├── config/
