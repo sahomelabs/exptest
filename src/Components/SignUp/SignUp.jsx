@@ -1,25 +1,28 @@
-// src/Components/SignUp/SignUp.jsx
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignUp.css';
 
-const SignUp = ({ setIsAuthenticated }) => {
+const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
 
-    // Replace with actual sign-up logic
-    console.log('Signing up user:', { email, password });
-    setIsAuthenticated(true);
-    navigate('/');
+    try {
+      const response = await axios.post('http://localhost:3001/api/auth/signup', {
+        email,
+        password,
+        confirmPassword
+      });
+      console.log(response.data);
+      navigate('/signin'); // Redirect to sign-in page on success
+    } catch (error) {
+      console.error('Error signing up:', error.response ? error.response.data : error.message);
+    }
   };
 
   return (
