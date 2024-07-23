@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './ExpenseForm.css';
 
 const ExpenseForm = ({ addExpense }) => {
@@ -9,7 +10,8 @@ const ExpenseForm = ({ addExpense }) => {
     setExpense({ ...expense, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  // Mark the handleSubmit function as async
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const currentDate = new Date().toISOString().split('T')[0];
 
@@ -19,19 +21,23 @@ const ExpenseForm = ({ addExpense }) => {
     }
     setError('');
 
-
-    addExpense(expense);
-    setExpense({ name: '', amount: '', categoryGroup: '', category: '', date: '', dueDate: '' });
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:3001/api/expenses', expense, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      addExpense(response.data);
+      setExpense({ name: '', amount: '', categoryGroup: '', category: '', date: '', dueDate: '' });
+    } catch (error) {
+      console.error('Error adding expense:', error);
+    }
   };
 
   return (
     <form className="expense-form" onSubmit={handleSubmit}>
-      <select
-        name="categoryGroup"
-        value={expense.categoryGroup}
-        onChange={handleChange}
-        required
-      >
+      <select name="categoryGroup" value={expense.categoryGroup} onChange={handleChange} required>
         <option value="">Select Category Group</option>
         <option value="HOUSING">HOUSING</option>
         <option value="FOOD">FOOD</option>
@@ -40,12 +46,7 @@ const ExpenseForm = ({ addExpense }) => {
         <option value="PAY-IN-4">PAY-IN-4</option>
         <option value="ENTERTAINMENT">ENTERTAINMENT</option>
       </select>
-      <select
-        name="category"
-        value={expense.category}
-        onChange={handleChange}
-        required
-      >
+      <select name="category" value={expense.category} onChange={handleChange} required>
         <option value="">Select Category</option>
         {expense.categoryGroup === 'HOUSING' && (
           <>
@@ -118,32 +119,11 @@ const ExpenseForm = ({ addExpense }) => {
         )}
       </select>
       <div className="amount-input-container">
-        <input
-          type="number"
-          name="amount"
-          value={expense.amount}
-          onChange={handleChange}
-          placeholder="Amount"
-          required
-          className="amount-input"
-        />
+        <input type="number" name="amount" value={expense.amount} onChange={handleChange} placeholder="Amount" required className="amount-input" />
       </div>
-      <input
-        type="date"
-        name="date"
-        value={expense.date}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="date"
-        name="dueDate"
-        value={expense.dueDate}
-        onChange={handleChange}
-        required
-      />
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-
+      <input type="date" name="date" value={expense.date} onChange={handleChange} required />
+      <input type="date" name="dueDate" value={expense.dueDate} onChange={handleChange} required />
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <button type="submit">Add Expense</button>
     </form>
   );

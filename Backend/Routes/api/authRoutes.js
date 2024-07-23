@@ -2,75 +2,74 @@
 
 const express = require('express');
 const router = express.Router();
-const User = require('../../models/User'); // Import the User model
+const User = require('../../Models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// POST route for user signup
+// Signup Route
 router.post('/signup', async (req, res) => {
-    const { email, password, confirmPassword } = req.body;
+  const { email, password } = req.body;
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ message: 'User already exists' });
 
-    // Basic validation
-    if (!email || !password || !confirmPassword) {
-        return res.status(400).json({ message: 'All fields are required testing postman' });
-    }
-    if (password !== confirmPassword) {
-        return res.status(400).json({ message: 'Passwords do not match' });
-    }
-
-    try {
-        // Check if the user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
-
-        // Create a new user
-        const newUser = new User({ email, password }); // You should hash the password before saving
-
-        await newUser.save();
-        res.status(201).json({ message: 'User signed up successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
+    const newUser = new User({ email, password });
+    await newUser.save();
+    res.status(201).json({ message: 'User signed up successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
-
-
-// POST route for user login
+// Login Route
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    // Basic validation
-    if (!email || !password) {
-        return res.status(400).json({ message: 'All fields are required user login' });
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    try {
-        // Check if the user exists
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: 'Invalid credentials' });
-        }
-
-        // Check if the password is correct
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials' });
-        }
-
-        // Generate a JWT token
-        const token = jwt.sign({ userId: user._id }, process.env.SECRET, { expiresIn: '1h' });
-
-        res.status(200).json({ token });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET, { expiresIn: '1h' });
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
-module.exports = router;
+// Middleware to authenticate user
+const authenticate = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    if (err) return res.status(401).json({ message: 'Unauthorized' });
+    req.userId = decoded.userId;
+    next();
+  });
+};
+
+// Route to get user expenses
+router.get('/expenses', verifyToken, async (req, res) => {
+  try {
+    const expenses = await Expense.find({ user: req.user.id });
+    res.status(200).json(expenses);
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving expenses', error });
+  }
+});
+
+// Route to add expense
+router.post('/expenses', authenticate, async (req, res) => {
+  const { description, amount, date } = req.body;
+  try {
+    const user = await User.findById(req.userId);
+    user.expenses.push({ description, amount, date });
+    await user.save();
+    res.status(201).json({ message: 'Expense added' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 module.exports = router;
