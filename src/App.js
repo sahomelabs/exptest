@@ -22,6 +22,16 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 
+  // Check for authentication status on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, []);
+
   useEffect(() => {
     const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
     setExpenses(savedExpenses);
@@ -58,15 +68,27 @@ const App = () => {
       <Header />
       <Routes>
 
-      <Route path="/" element={
-        <>
-      <IncomeForm setIncome={setIncome} />
-      <ExpenseForm addExpense={addExpense} />
-      <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense}/>
-      <Summary income={income} expenses={expenses} />
-      </>
-            
-      } />
+      <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <>
+                  <IncomeForm setIncome={setIncome} />
+                  <ExpenseForm addExpense={addExpense} />
+                  <ExpenseList
+                    expenses={expenses}
+                    editExpense={editExpense}
+                    deleteExpense={deleteExpense}
+                  />
+                  <Summary income={income} expenses={expenses} />
+                </>
+              ) : (
+                <SignIn setIsAuthenticated={setIsAuthenticated} />
+              )
+            }
+      
+      
+      />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/privacy" element={<Privacy />} />
