@@ -2,73 +2,109 @@
 
 const express = require('express');
 const router = express.Router();
-const User = require('../../Models/User');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../../models/User');
+const Expense = require('../../models/Expense');
 
-// Signup Route
-router.post('/signup', async (req, res) => {
-  const { email, password } = req.body;
+// Middleware to verify token
+const verifyToken = (req, res, next) => {
+  const token = req.header('Authorization')?.split(' ')[1];
+  if (!token) return res.status(401).send('Access Denied');
+
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: 'User already exists' });
-
-    const newUser = new User({ email, password });
-    await newUser.save();
-    res.status(201).json({ message: 'User signed up successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// Login Route
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET, { expiresIn: '1h' });
-    res.json({ token });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// Middleware to authenticate user
-const authenticate = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'Unauthorized' });
-
-  jwt.verify(token, process.env.SECRET, (err, decoded) => {
-    if (err) return res.status(401).json({ message: 'Unauthorized' });
-    req.userId = decoded.userId;
+    const verified = jwt.verify(token, process.env.SECRET);
+    req.user = verified;
     next();
-  });
+  } catch (err) {
+    res.status(400).send('Invalid Token');
+  }
 };
 
-// Route to get user expenses
-router.get('/expenses', verifyToken, async (req, res) => {
+// User signup
+router.post('/signup', async (req, res) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.status(400).json({ message: 'User already exists' });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  const user = new User({
+    name,
+    email,
+    password: hashedPassword,
+    expenses: []
+  });
+
   try {
-    const expenses = await Expense.find({ user: req.user.id });
-    res.status(200).json(expenses);
-  } catch (error) {
-    res.status(500).json({ message: 'Error retrieving expenses', error });
+    const savedUser = await user.save();
+    res.status(201).json({ message: 'User created successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-// Route to add expense
-router.post('/expenses', authenticate, async (req, res) => {
-  const { description, amount, date } = req.body;
+// User login
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ message: 'Invalid credentials' });
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(400).json({ message: 'Invalid credentials' });
+  }
+
+  const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '1h' });
+  res.json({ token });
+});
+
+// Get user expenses
+router.get('/expenses', verifyToken, async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
-    user.expenses.push({ description, amount, date });
+    const user = await User.findById(req.user._id).populate('expenses');
+    res.json(user.expenses);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Add new expense
+router.post('/expenses', verifyToken, async (req, res) => {
+  const { name, amount, categoryGroup, category, date, dueDate } = req.body;
+
+  const expense = new Expense({
+    name,
+    amount,
+    categoryGroup,
+    category,
+    date,
+    dueDate
+  });
+
+  try {
+    const savedExpense = await expense.save();
+    const user = await User.findById(req.user._id);
+    user.expenses.push(savedExpense);
     await user.save();
-    res.status(201).json({ message: 'Expense added' });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(201).json(savedExpense);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 

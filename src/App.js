@@ -1,7 +1,5 @@
 // src/App.jsx
-
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar/Navbar';
 import Header from './Components/Header/Header';
@@ -23,25 +21,13 @@ const App = () => {
   const [expenses, setExpenses] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // Check if token exists in localStorage and update authentication state
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3001/api/expenses', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        setExpenses(response.data);
-      } catch (error) {
-        console.error('Error fetching expenses:', error);
-      }
-    };
-
-    if (isAuthenticated) {
-      fetchData();
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsAuthenticated(true);
     }
-  }, [isAuthenticated]);
+  }, []);
 
   useEffect(() => {
     const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
@@ -51,6 +37,7 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem('expenses', JSON.stringify(expenses));
     if (isAuthenticated) {
+      // backend save logic
       console.log('Saving data to backend...', expenses);
     }
   }, [expenses, isAuthenticated]);
@@ -71,7 +58,7 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar isAuthenticated={isAuthenticated} />
+      <Navbar isAuthenticated={isAuthenticated}/>
       <div className="App">
         <Header />
         <Routes>
@@ -79,7 +66,7 @@ const App = () => {
             <>
               <IncomeForm setIncome={setIncome} />
               <ExpenseForm addExpense={addExpense} />
-              <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense} />
+              <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense}/>
               <Summary income={income} expenses={expenses} />
             </>
           } />
