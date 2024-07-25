@@ -1,36 +1,41 @@
 const express = require('express');
 const router = express.Router();
-const Expense = require('../Models/Expense');
-const authenticate = require('../middleware/authenticate');
+const Expense = require('../../Models/Expense'); // Ensure this path is correct
+const User = require('../../Models/User'); // Ensure this path is correct
 
-// Add a new expense
-router.post('/', authenticate, async (req, res) => {
-  const { name, amount, categoryGroup, category, date, dueDate } = req.body;
-
+// Define your routes here
+router.get('/expenses/:userId', async (req, res) => {
   try {
-    const expense = new Expense({
-      userId: req.user.id,
-      name,
-      amount,
-      categoryGroup,
-      category,
-      date,
-      dueDate,
-    });
-    await expense.save();
-    res.status(201).json(expense);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    const user = await User.findById(req.params.userId).populate('expenses');
+    res.json(user.expenses);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-// Get all expenses for a user
-router.get('/', authenticate, async (req, res) => {
+router.post('/expenses', async (req, res) => {
+  const { userId, name, amount, categoryGroup, category, date, dueDate } = req.body;
+
+  const expense = new Expense({
+    name,
+    amount,
+    categoryGroup,
+    category,
+    date,
+    dueDate
+  });
+
   try {
-    const expenses = await Expense.find({ userId: req.user.id });
-    res.status(200).json(expenses);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    const savedExpense = await expense.save();
+    let user = await User.findById(userId);
+    if (!user) {
+      user = new User({ _id: userId, expenses: [] });
+    }
+    user.expenses.push(savedExpense);
+    await user.save();
+    res.status(201).json(savedExpense);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 

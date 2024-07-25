@@ -1,42 +1,52 @@
+// src/components/ExpenseForm.jsx
+
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './ExpenseForm.css';
 
-const ExpenseForm = ({ addExpense }) => {
-  const [expense, setExpense] = useState({ name: '', amount: '', categoryGroup: '', category: '', date: '', dueDate: '' });
-  const [error, setError] = useState('');
+const ExpenseForm = () => {
+  const [expense, setExpense] = useState({
+    name: '',
+    amount: '',
+    categoryGroup: '',
+    category: '',
+    date: '',
+    dueDate: '',
+  });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setExpense({ ...expense, [e.target.name]: e.target.value });
   };
 
-  // Mark the handleSubmit function as async
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const currentDate = new Date().toISOString().split('T')[0];
-
-    if (expense.date !== currentDate) {
-      setError('Date added must be the current date.');
-      return;
-    }
-    setError('');
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:3001/api/expenses', expense, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/expenses`, {
+        method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(expense),
       });
-      addExpense(response.data);
-      setExpense({ name: '', amount: '', categoryGroup: '', category: '', date: '', dueDate: '' });
+
+      if (response.status === 201) {
+        navigate('/expenses');
+      } else {
+        const data = await response.json();
+        alert(data.message || 'An error occurred');
+      }
     } catch (error) {
-      console.error('Error adding expense:', error);
+      alert('An error occurred. Please try again.');
     }
   };
 
   return (
-    <form className="expense-form" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
+      <h2>Add Expense</h2>
       <select name="categoryGroup" value={expense.categoryGroup} onChange={handleChange} required>
         <option value="">Select Category Group</option>
         <option value="HOUSING">HOUSING</option>
@@ -123,7 +133,6 @@ const ExpenseForm = ({ addExpense }) => {
       </div>
       <input type="date" name="date" value={expense.date} onChange={handleChange} required />
       <input type="date" name="dueDate" value={expense.dueDate} onChange={handleChange} required />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
       <button type="submit">Add Expense</button>
     </form>
   );

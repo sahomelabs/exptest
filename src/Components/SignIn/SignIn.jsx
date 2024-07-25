@@ -1,7 +1,8 @@
-import React, { useState  } from 'react';
+// src/components/SignIn.jsx
+
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import axios from 'axios'; // Import Axios
 import './SignIn.css';
 
 const SignIn = ({ setIsAuthenticated }) => {
@@ -13,16 +14,21 @@ const SignIn = ({ setIsAuthenticated }) => {
     e.preventDefault();
 
     try {
-      // Send a POST request to the backend for login
-      const response = await axios.post('http://localhost:3001/api/auth/login', { email, password });
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      // Assuming your backend sends a token in the response
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token); // Store token in localStorage
-        setIsAuthenticated(true);
-        navigate('/');
+      const data = await response.json();
+
+      if (response.status === 200) {
+        localStorage.setItem('token', data.token);
+        navigate('/expenses');
       } else {
-        alert('Invalid credentials');
+        alert(data.message || 'An error occurred');
       }
     } catch (error) {
       alert('An error occurred. Please try again.');

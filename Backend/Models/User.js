@@ -1,42 +1,30 @@
 // Backend/models/User.js
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 
-const ExpenseSchema = new mongoose.Schema({
-  description: {
-    type: String,
-    required: true
-  },
-  amount: {
-    type: Number,
-    required: true
-  },
-  date: {
-    type: Date,
-    default: Date.now
-  }
-});
-
+// Define the User schema
 const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    trim: true,
+    lowercase: true
   },
   password: {
     type: String,
     required: true
   },
-  expenses: [ExpenseSchema] // Store user-specific expenses
+  expenses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Expense'
+  }]
 });
 
-// Hash the password before saving
-UserSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-  next();
-});
-
-module.exports = mongoose.model('User', UserSchema);
+// Create and export the User model
+module.exports = mongoose.models.User || mongoose.model('User', UserSchema);

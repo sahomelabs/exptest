@@ -1,36 +1,39 @@
-// Backend/server.js
+require('dotenv').config(); // Load environment variables from .env file
 
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-require('dotenv').config();
 
-// Create an Express application
 const app = express();
+const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
 // Import routes
-const authRoutes = require('./Backend/Routes/api/authRoutes');  
+const authRoutes = require('./Backend/Routes/api/authRoutes'); // Adjust path if needed
+const expenseRoutes = require('./Backend/Routes/api/expenseRoutes'); // Adjust path if needed
 
 // Use routes
 app.use('/api/auth', authRoutes);
+app.use('/api/expenses', expenseRoutes);
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Server is running');
-});
+// MongoDB connection
+const uri = process.env.MONGODB_URI;
+console.log('Connecting to MongoDB with URI:', uri);
 
-// Start the server
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch(err => {
+    console.error('Failed to connect to MongoDB:', err);
+  });

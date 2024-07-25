@@ -4,8 +4,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../../models/User');
-const Expense = require('../../models/Expense');
+const User = require('../../Models/User'); // Ensure this path is correct
+const Expense = require('../../Models/Expense'); // Adjust if needed
 
 // Middleware to verify token
 const verifyToken = (req, res, next) => {
@@ -72,40 +72,6 @@ router.post('/login', async (req, res) => {
 
   const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '1h' });
   res.json({ token });
-});
-
-// Get user expenses
-router.get('/expenses', verifyToken, async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id).populate('expenses');
-    res.json(user.expenses);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Add new expense
-router.post('/expenses', verifyToken, async (req, res) => {
-  const { name, amount, categoryGroup, category, date, dueDate } = req.body;
-
-  const expense = new Expense({
-    name,
-    amount,
-    categoryGroup,
-    category,
-    date,
-    dueDate
-  });
-
-  try {
-    const savedExpense = await expense.save();
-    const user = await User.findById(req.user._id);
-    user.expenses.push(savedExpense);
-    await user.save();
-    res.status(201).json(savedExpense);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
 });
 
 module.exports = router;
