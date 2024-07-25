@@ -1,4 +1,6 @@
 # Expense Tracker App
+# Working on new branch  envnew
+
 Overview
 The Expense Tracker App is a web application designed to help users manage their monthly income and expenses. Users can track their expenses by category, view summaries, and authenticate to save their data. This application is built with React for the frontend and Node.js with Express for the backend, utilizing MongoDB for data storage.
 
