@@ -1,6 +1,7 @@
 // src/App.jsx
+
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './Components/Navbar/Navbar';
 import Header from './Components/Header/Header';
 import ExpenseForm from './Components/ExpenseForm/ExpenseForm';
@@ -58,7 +59,7 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar isAuthenticated={isAuthenticated}/>
+      <Navbar isAuthenticated={isAuthenticated} />
       <div className="App">
         <Header />
         <Routes>
@@ -66,7 +67,7 @@ const App = () => {
             <>
               <IncomeForm setIncome={setIncome} />
               <ExpenseForm addExpense={addExpense} />
-              <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense}/>
+              <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense} />
               <Summary income={income} expenses={expenses} />
             </>
           } />
@@ -76,6 +77,7 @@ const App = () => {
           <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signout" element={<SignOut setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/expenses" element={isAuthenticated ? <ExpenseList /> : <Navigate to="/signin" />} />
         </Routes>
         <Footer />
       </div>

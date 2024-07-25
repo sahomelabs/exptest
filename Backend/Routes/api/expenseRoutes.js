@@ -1,7 +1,8 @@
+// Backend/Routes/api/expenseRoutes.js
 const express = require('express');
 const router = express.Router();
-const Expense = require('../../Models/Expense'); // Ensure this path is correct
-const User = require('../../Models/User'); // Ensure this path is correct
+const Expense = require('../../Models/Expense');
+const User = require('../../Models/User');
 
 // Define your routes here
 router.get('/expenses/:userId', async (req, res) => {
@@ -15,15 +16,7 @@ router.get('/expenses/:userId', async (req, res) => {
 
 router.post('/expenses', async (req, res) => {
   const { userId, name, amount, categoryGroup, category, date, dueDate } = req.body;
-
-  const expense = new Expense({
-    name,
-    amount,
-    categoryGroup,
-    category,
-    date,
-    dueDate
-  });
+  const expense = new Expense({ name, amount, categoryGroup, category, date, dueDate });
 
   try {
     const savedExpense = await expense.save();

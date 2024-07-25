@@ -4,9 +4,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ExpenseForm.css';
 
-const ExpenseForm = () => {
+const ExpenseForm = ({ addExpense }) => {
   const [expense, setExpense] = useState({
-    name: '',
     amount: '',
     categoryGroup: '',
     category: '',
@@ -24,13 +23,15 @@ const ExpenseForm = () => {
 
     try {
       const token = localStorage.getItem('token');
+      const userID = token ? JSON.parse(atob(token.split('.')[1]))._id : null;
+
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/expenses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: token? `Bearer ${token}` : undefined,
         },
-        body: JSON.stringify(expense),
+        body: JSON.stringify({ ...expense, userID}),
       });
 
       if (response.status === 201) {
@@ -47,6 +48,7 @@ const ExpenseForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Add Expense</h2>
+      
       <select name="categoryGroup" value={expense.categoryGroup} onChange={handleChange} required>
         <option value="">Select Category Group</option>
         <option value="HOUSING">HOUSING</option>

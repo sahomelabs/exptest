@@ -30,7 +30,6 @@ const ExpenseList = () => {
       <ul>
         {expenses.map((expense) => (
           <li key={expense._id}>
-            <strong>{expense.name}</strong>: ${expense.amount} <br />
             Category Group: {expense.categoryGroup} <br />
             Category: {expense.category} <br />
             Date: {new Date(expense.date).toLocaleDateString()} <br />

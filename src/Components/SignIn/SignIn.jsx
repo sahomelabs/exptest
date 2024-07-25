@@ -22,12 +22,15 @@ const SignIn = ({ setIsAuthenticated }) => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      if (response.ok) {
+        const { token, userId } = await response.json();
+        localStorage.setItem('token', token);
+        localStorage.setItem('userId', userId); // Save userId to local storage
+        setIsAuthenticated(true);
+        navigate('/');
 
-      if (response.status === 200) {
-        localStorage.setItem('token', data.token);
-        navigate('/expenses');
-      } else {
+     } else {
+        const data = await response.json();
         alert(data.message || 'An error occurred');
       }
     } catch (error) {
