@@ -1,5 +1,3 @@
-// src/App.jsx
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './Components/Navbar/Navbar';
@@ -63,19 +61,28 @@ const App = () => {
       <Navbar isAuthenticated={isAuthenticated} />
       <div className="App">
         <Header />
-    
-          <Routes>
-          <Route path="/" element={<HomePage />} />
+        <Routes>
+          <Route path="/" element={
+            isAuthenticated ? (
+              <>
+                <IncomeForm setIncome={setIncome} />
+                <ExpenseForm addExpense={addExpense} />
+                <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense} />
+                <Summary income={income} expenses={expenses} />
+              </>
+            ) : (
+              <HomePage />
+            )
+          } />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/signin" element={isAuthenticated ? <Navigate to="/" /> : <SignIn setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signout" element={<SignOut setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/expenses" element={isAuthenticated ? <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense} /> : <Navigate to="/signin" />} />
           <Route path="/add-expense" element={isAuthenticated ? <ExpenseForm addExpense={addExpense} /> : <Navigate to="/signin" />} />
-          </Routes>
-
+        </Routes>
         <Footer />
       </div>
     </Router>
