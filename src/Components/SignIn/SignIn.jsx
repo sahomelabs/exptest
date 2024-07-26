@@ -14,7 +14,7 @@ const SignIn = ({ setIsAuthenticated }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const SignIn = ({ setIsAuthenticated }) => {
         localStorage.setItem('token', token);
         localStorage.setItem('userId', userId); // Save userId to local storage
         setIsAuthenticated(true);
-        navigate('/');
+        navigate('/add-expense');
 
      } else {
         const data = await response.json();
