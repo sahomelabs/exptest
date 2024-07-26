@@ -12,6 +12,7 @@ const ExpenseForm = ({ addExpense }) => {
     date: '',
     dueDate: '',
   });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -35,13 +36,22 @@ const ExpenseForm = ({ addExpense }) => {
       });
 
       if (response.status === 201) {
-        navigate('/expenses');
+        const newExpense = await response.json();
+        addExpense(newExpense);
+        setExpense({
+          amount: '',
+          categoryGroup: '',
+          category: '',
+          date: '',
+          dueDate: '',
+        });
+        setError('');
       } else {
         const data = await response.json();
-        alert(data.message || 'An error occurred');
+        setError(data.message || 'An error occurred');
       }
     } catch (error) {
-      alert('An error occurred. Please try again.');
+      setError('An error occurred. Please try again.');
     }
   };
 
