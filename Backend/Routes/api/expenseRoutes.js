@@ -3,9 +3,25 @@ const express = require('express');
 const router = express.Router();
 const Expense = require('../../Models/Expense');
 const User = require('../../Models/User');
+const jwt = require('jsonwebtoken');
+
+
+
+// Middleware to verify token
+const verifyToken = (req, res, next) => {
+  const token = req.header('Authorization')?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Access Denied' });
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified;
+    next();
+  } catch (err) {
+    res.status(400).json({ message: 'Invalid Token' });
+  }
+};
 
 // Define your routes here
-router.get('/expenses/:userId', async (req, res) => {
+router.get('/:userId', verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId).populate('expenses');
     res.json(user.expenses);
@@ -14,7 +30,7 @@ router.get('/expenses/:userId', async (req, res) => {
   }
 });
 
-router.post('/expenses', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
   const { userId, name, amount, categoryGroup, category, date, dueDate } = req.body;
   const expense = new Expense({ name, amount, categoryGroup, category, date, dueDate });
 

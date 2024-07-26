@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ExpenseForm.css';
 
-const ExpenseForm = () => {
+const ExpenseForm = ({ addExpense }) => {
   const [expense, setExpense] = useState({
     amount: '',
     categoryGroup: '',
@@ -23,20 +23,15 @@ const ExpenseForm = () => {
 
     try {
       const token = localStorage.getItem('token');
-      if (!token) {
-        navigate('/signup');
-        return;
-      }
-
-      const userID = JSON.parse(atob(token.split('.')[1]))._id;
+      const userId = token ? JSON.parse(atob(token.split('.')[1]))._id : null;
 
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/expenses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: token ? `Bearer ${token}` : undefined,
         },
-        body: JSON.stringify({ ...expense, userID }),
+        body: JSON.stringify({ ...expense, userId }),
       });
 
       if (response.status === 201) {
