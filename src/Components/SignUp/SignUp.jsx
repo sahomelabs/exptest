@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import './SignUp.css';
 
 const SignUp = () => {
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,7 +21,7 @@ const SignUp = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
@@ -37,17 +36,11 @@ const SignUp = () => {
     }
   };
 
+
   return (
     <div className="signup">
       <form onSubmit={handleSignUp}>
         <h2>Sign Up</h2>
-        <input 
-          type="text" 
-          placeholder="Name" 
-          value={name} 
-          onChange={(e) => setName(e.target.value)} 
-          required 
-        />
         <input 
           type="email" 
           placeholder="Email" 

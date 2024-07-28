@@ -20,12 +20,15 @@ const App = () => {
   const [income, setIncome] = useState(0);
   const [expenses, setExpenses] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   // Check if token exists in localStorage and update authentication state
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
+    const email = localStorage.getItem('email');
+    if (token && email) {
       setIsAuthenticated(true);
+      setUserEmail(email);
     }
   }, []);
 
@@ -56,11 +59,21 @@ const App = () => {
     setExpenses(updatedExpenses);
   };
 
+
+  const handleSetIsAuthenticated = (authStatus) => {
+    setIsAuthenticated(authStatus);
+    if (authStatus) {
+      const email = localStorage.getItem('email');
+      setUserEmail(email);
+    }
+  };
+
   return (
     <Router>
-      <Navbar isAuthenticated={isAuthenticated} />
+      <Navbar isAuthenticated={isAuthenticated} userEmail={userEmail} />
       <div className="App">
         <Header />
+        {isAuthenticated && userEmail && <p>Welcome, {userEmail.split('@')[0]}!</p>}
         <Routes>
           <Route path="/" element={
             isAuthenticated ? (

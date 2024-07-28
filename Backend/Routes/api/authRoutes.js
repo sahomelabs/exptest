@@ -20,8 +20,8 @@ const verifyToken = (req, res, next) => {
 
 // User signup
 router.post('/signup', async (req, res) => {
-  const { name, email, password } = req.body;
-  if (!name || !email || !password) {
+  const { email, password } = req.body;
+  if ( !email || !password) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
@@ -33,7 +33,7 @@ router.post('/signup', async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const user = new User({ name, email, password: hashedPassword, expenses: [] });
+    const user = new User({ email, password: hashedPassword, expenses: [] });
     const savedUser = await user.save();
     res.status(201).json({ message: 'User created successfully' });
   } catch (err) {
