@@ -27,7 +27,7 @@ const SignIn = ({ setIsAuthenticated }) => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('email', email); // Save userId to local storage
         setIsAuthenticated(true);
-        navigate('/add-expense');
+        navigate('/');
 
      } else {
         const data = await response.json();
