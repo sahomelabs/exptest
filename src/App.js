@@ -59,15 +59,6 @@ const App = () => {
     setExpenses(updatedExpenses);
   };
 
-
-  // const handleSetIsAuthenticated = (authStatus) => {
-  //   setIsAuthenticated(authStatus);
-  //   if (authStatus) {
-  //     const email = localStorage.getItem('email');
-  //     setUserEmail(email);
-  //   }
-  // };
-
   return (
     <Router>
       <Navbar isAuthenticated={isAuthenticated} userEmail={userEmail} />
