@@ -60,13 +60,13 @@ const App = () => {
   };
 
 
-  const handleSetIsAuthenticated = (authStatus) => {
-    setIsAuthenticated(authStatus);
-    if (authStatus) {
-      const email = localStorage.getItem('email');
-      setUserEmail(email);
-    }
-  };
+  // const handleSetIsAuthenticated = (authStatus) => {
+  //   setIsAuthenticated(authStatus);
+  //   if (authStatus) {
+  //     const email = localStorage.getItem('email');
+  //     setUserEmail(email);
+  //   }
+  // };
 
   return (
     <Router>
