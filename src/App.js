@@ -14,6 +14,7 @@ import SignIn from './Components/SignIn/SignIn';
 import SignOut from './Components/SignOut/SignOut';
 import SignUp from './Components/SignUp/SignUp';
 import HomePage from './Components/HomePage/HomePage';
+import EditIncomeForm from './EditIncome/EditIncomeForm';
 import './App.css';
 
 const App = () => {
@@ -21,14 +22,19 @@ const App = () => {
   const [expenses, setExpenses] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [userId, setUserId] = useState('');
+
 
   // Check if token exists in localStorage and update authentication state
+ 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('email');
-    if (token && email) {
+    const id = localStorage.getItem('userId');
+    if (token) {
       setIsAuthenticated(true);
       setUserEmail(email);
+      setUserId(id);
     }
   }, []);
 
@@ -59,6 +65,11 @@ const App = () => {
     setExpenses(updatedExpenses);
   };
 
+
+  const handleUpdateIncome = (updatedIncome) => {
+    setIncome(updatedIncome);
+  };
+
   return (
     <Router>
       <Navbar isAuthenticated={isAuthenticated} userEmail={userEmail} />
@@ -70,6 +81,7 @@ const App = () => {
             isAuthenticated ? (
               <>
                 <IncomeForm setIncome={setIncome} />
+                <EditIncomeForm userId={userId} currentIncome={income} onUpdateIncome={handleUpdateIncome} /> 
                 <ExpenseForm addExpense={addExpense} />
                 <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense} />
                 <Summary income={income} expenses={expenses} />

@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import './IncomeForm.css';
 
-const IncomeForm = ({ setIncome }) => {
-  const [incomeInput, setIncomeInput] = useState('');
+const IncomeForm = ({ setIncome, initialIncome }) => {
+  const [incomeInput, setIncomeInput] = useState('initialIncome');
 
   const handleChange = (e) => {
     setIncomeInput(e.target.value);
@@ -13,7 +13,7 @@ const IncomeForm = ({ setIncome }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIncome(parseFloat(incomeInput));
-    setIncomeInput('');
+    // setIncomeInput('');
   };
 
   return (
