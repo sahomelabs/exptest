@@ -10,7 +10,7 @@
   }
   
   .home-page a {
-    color: #007bff;
+    /* color: #007bff; */
     text-decoration: none;
     font-weight: bold;
     margin: 0 0.5rem;
@@ -21,17 +21,18 @@
   }
   
 
+
   .home-page .button-container {
     display: flex;
-    gap: 20px; /* Space between buttons */
+    gap: 5px; /* Space between buttons */
   }
   
   .home-page .button-container a {
     text-decoration: none;
     padding: 10px 20px;
-    border: 1px solid #007bff;
+    border: 1px solid #013111af;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: #013111af;;
     color: white;
     font-size: 1rem;
     font-weight: bold;
