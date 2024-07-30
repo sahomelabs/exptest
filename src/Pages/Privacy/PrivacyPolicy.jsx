@@ -7,7 +7,7 @@ const PrivacyPolicy = () => {
     <div className="privacy-policy">
       <h1>Privacy Policy</h1>
       <h2>1. Introduction</h2>
-      <p>Welcome to Grow Wise. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about this privacy notice or our practices with regard to your personal information, please contact us at [Insert Contact Email].</p>
+      <p>Welcome to Grow Wise. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about this privacy notice or our practices with regard to your personal information, please contact us at support@grow--wise.com</p>
       
       <h2>2. Information We Collect</h2>
       <p>We collect personal information that you voluntarily provide to us when you register on the website, express an interest in obtaining information about us or our products and services, when you participate in activities on the website, or otherwise when you contact us.</p>
@@ -40,7 +40,6 @@ const PrivacyPolicy = () => {
       <p>If you have questions or comments about this policy, you may contact us at:</p>
       <p>Email: support@grow--wise.com</p>
       <p>Effective Date: July 30, 2024</p>
-
     </div>
   );
 };
