@@ -14,6 +14,7 @@ import SignOut from './Components/SignOut/SignOut';
 import SignUp from './Components/SignUp/SignUp';
 import HomePage from './Components/HomePage/HomePage';
 import EditIncomeForm from './EditIncome/EditIncomeForm';
+import AboutUs from './Pages/AboutUs/AboutUs';
 import './App.css';
 
 const App = () => {
@@ -89,6 +90,7 @@ const App = () => {
             )
           } />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
+          <Route path="/aboutus" element={<AboutUs/>} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/signin" element={isAuthenticated ? <Navigate to="/" /> : <SignIn setIsAuthenticated={setIsAuthenticated} />} />
