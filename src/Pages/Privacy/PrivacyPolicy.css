@@ -1,0 +1,14 @@
+/* Privacy Policy css */
+
+.privacy-policy {
+    max-width: autox;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.privacy-policy ul {
+    list-style-type: none;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
