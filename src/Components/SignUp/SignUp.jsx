@@ -6,14 +6,33 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+
+
+  const validatePassword = (password) => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const minLength = password.length >= 8;
+
+    return hasUpperCase && hasLowerCase && hasNumber && minLength;
+  };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert ('Passwords do not match');
+      setError ('Passwords do not match');
+      return;
     }
+
+    if (!validatePassword(password)) {
+      setError('Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number.');
+      return;
+    }
+
+    setError('');
 
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/signup`, {
@@ -62,6 +81,9 @@ const SignUp = () => {
                   onChange={(e) => setConfirmPassword(e.target.value)} 
                   required 
         />
+
+          {error && <p className="error">{error}</p>}
+
 
         <button type="submit">Sign Up</button>
       </form>
