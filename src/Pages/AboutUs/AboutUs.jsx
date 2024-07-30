@@ -1,8 +1,16 @@
 // About GrowWise
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AboutUs.css';
 
+
 const AboutUs = () => {
+    const navigate = useNavigate();
+  
+    const handleGetStartedClick = () => {
+      navigate('/signin');
+    };
+
   return (
     <div className="about-us">
       <h2>Welcome to GrowWise</h2>
@@ -43,7 +51,8 @@ const AboutUs = () => {
         Thank you for choosing Grow Wise. Together, let’s take the next step towards a smarter financial future.
       </p>
       <div className="cta">
-        <button>Get Started Today</button>
+        <button onClick={handleGetStartedClick}>Get Started Today</button>
+
         <p>and see how Grow Wise can help you manage your expenses with ease!</p>
       </div>
     </div>
