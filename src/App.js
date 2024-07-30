@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './Components/Navbar/Navbar';
-import Header from './Components/Header/Header';
 import ExpenseForm from './Components/ExpenseForm/ExpenseForm';
 import IncomeForm from './Components/IncomeForm/IncomeForm';
 import ExpenseList from './Components/ExpenseList/ExpenseList';
@@ -74,7 +73,6 @@ const App = () => {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} userEmail={userEmail} />
       <div className="App">
-        <Header />
         {isAuthenticated && userEmail && <p>Welcome, {userEmail.split('@')[0]}!</p>}
         <Routes>
           <Route path="/" element={

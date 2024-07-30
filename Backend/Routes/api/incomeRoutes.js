@@ -1,32 +1,39 @@
+// /Users/danielcozy/Desktop/expen-prod/exptest/Backend/Routes/api/incomeRoutes.js
 const express = require('express');
 const router = express.Router();
-const Income = require('../Models/Income');
-const authenticate = require('../middleware/authenticate');
+const Income = require('../../Models/Income'); // Correct path to the Income model
 
-// Add a new income
-router.post('/', authenticate, async (req, res) => {
-  const { source, amount } = req.body;
-
+// Add income
+router.post('/', async (req, res) => {
+  const { amount } = req.body;
   try {
-    const income = new Income({
-      userId: req.user.id,
-      source,
-      amount
-    });
-    await income.save();
-    res.status(201).json(income);
+    const newIncome = new Income({ amount });
+    await newIncome.save();
+    res.status(201).json(newIncome);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: error.message });
   }
 });
 
-// Get all income for a user
-router.get('/', authenticate, async (req, res) => {
+// Edit income
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { amount } = req.body;
   try {
-    const income = await Income.find({ userId: req.user.id });
-    res.status(200).json(income);
+    const updatedIncome = await Income.findByIdAndUpdate(id, { amount }, { new: true });
+    res.status(200).json(updatedIncome);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get all incomes
+router.get('/', async (req, res) => {
+  try {
+    const incomes = await Income.find();
+    res.status(200).json(incomes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

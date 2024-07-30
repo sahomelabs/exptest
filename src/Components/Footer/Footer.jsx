@@ -10,7 +10,7 @@ const Footer = () => {
         <a href="/terms-of-use">Terms of Use</a>
         <a href="/privacy">Privacy Policy</a>
       </div>
-        <p>&copy; 2024 Expense Tracker</p>
+        <p>&copy; 2024 GrowWise</p>
     </footer>
   );
 };

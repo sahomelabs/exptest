@@ -1,11 +1,11 @@
 // src/components/EditIncomeForm.jsx
 import React, { useState, useEffect } from 'react';
 
-const EditIncomeForm = ({ userId, currentIncome, onUpdateIncome }) => {
-  const [income, setIncome] = useState(currentIncome);
+const EditIncomeForm = ({ currentIncome, onUpdateIncome }) => {
+  const [income, setIncome] = useState(currentIncome.amount);
 
   useEffect(() => {
-    setIncome(currentIncome);
+    setIncome(currentIncome.amount);
   }, [currentIncome]);
 
   const handleIncomeChange = (e) => {
@@ -16,17 +16,17 @@ const EditIncomeForm = ({ userId, currentIncome, onUpdateIncome }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/income/${currentIncome._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ income }),
+        body: JSON.stringify({ amount: parseFloat(income) }),
       });
 
       if (response.ok) {
-        const updatedUser = await response.json();
-        onUpdateIncome(updatedUser.income);
+        const updatedIncome = await response.json();
+        onUpdateIncome(updatedIncome);
       } else {
         const errorData = await response.json();
         alert(errorData.message || 'An error occurred');
@@ -44,6 +44,7 @@ const EditIncomeForm = ({ userId, currentIncome, onUpdateIncome }) => {
         id="income"
         value={income}
         onChange={handleIncomeChange}
+        required
       />
       <button type="submit">Update Income</button>
     </form>

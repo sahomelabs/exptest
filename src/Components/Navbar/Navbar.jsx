@@ -6,10 +6,15 @@ import './Navbar.css';
 const Navbar = ({ isAuthenticated, userEmail  }) => {
 
   return (
+  
     <nav className="navbar">
+
       <ul>
+      <img src="/GrowWise-White-Logo.png" alt="GrowWise Logo" />
+
         {isAuthenticated ? (
           <>
+          
             <li><Link to="/">Home</Link></li>
             <li><Link to="/">Add Expense</Link></li>
             <li><Link to="/expenses">Expenses</Link></li>
