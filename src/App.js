@@ -8,7 +8,7 @@ import Summary from './Components/Summary/Summary';
 import Footer from './Components/Footer/Footer';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import TermsOfUse from './Pages/TermsofUse/TermsOfUse';
-import Privacy from './Pages/Privacy/Privacy';
+import Privacy from './Pages/Privacy/PrivacyPolicy';
 import SignIn from './Components/SignIn/SignIn';
 import SignOut from './Components/SignOut/SignOut';
 import SignUp from './Components/SignUp/SignUp';
