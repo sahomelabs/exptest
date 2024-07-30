@@ -90,8 +90,8 @@ const App = () => {
             )
           } />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
-          <Route path="/aboutus" element={<AboutUs/>} />
-          <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/about-us" element={<AboutUs/>} />
+          <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/signin" element={isAuthenticated ? <Navigate to="/" /> : <SignIn setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signout" element={<SignOut setIsAuthenticated={setIsAuthenticated} />} />
