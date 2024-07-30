@@ -5,7 +5,8 @@ import './AboutUs.css';
 const AboutUs = () => {
   return (
     <div className="about-us">
-      <h2>Welcome to GrowWise — your ultimate companion for managing and optimizing your expenses!</h2>
+      <h2>Welcome to GrowWise</h2>
+         <p> Your ultimate companion for managing and optimizing your expenses!</p>
       <p>
         <strong>Our Story</strong><br />
         The idea for Grow Wise was born from a simple yet powerful experience. As a couple, we found ourselves constantly trying to budget our finances and keep track of our expenses. My wife, in particular, relied on her iPhone’s Notes app to jot down every expense. While this method worked to some extent, it was far from ideal for getting a clear, organized view of our financial situation.
