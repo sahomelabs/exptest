@@ -15,6 +15,7 @@ import SignUp from './Components/SignUp/SignUp';
 import HomePage from './Components/HomePage/HomePage';
 import EditIncomeForm from './EditIncome/EditIncomeForm';
 import AboutUs from './Pages/AboutUs/AboutUs';
+import HowItWorks from './Pages/How/howItWorks';
 import './App.css';
 
 const App = () => {
@@ -89,6 +90,8 @@ const App = () => {
               <HomePage />
             )
           } />
+
+          <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/about-us" element={<AboutUs/>} />
           <Route path="/contact-us" element={<ContactUs />} />

@@ -6,8 +6,9 @@ const Footer = () => {
   return (
     <footer>
       <div className="footer-links">
-      <a href="/about-us">AboutUs</a>
+        <a href='/how-it-works'>How It Works</a>
         <a href="/contact-us">Contact Us</a>
+        <a href="/about-us">AboutUs</a>
         <a href="/terms-of-use">Terms of Use</a>
         <a href="/privacy">Privacy Policy</a>
       </div>
