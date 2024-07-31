@@ -71,7 +71,8 @@ const ExpenseList = ({isAuthenticated}) => {
             Category Group: {expense.categoryGroup} <br />
             Category: {expense.category} <br />
             Date: {new Date(expense.date).toLocaleDateString()} <br />
-            Due Date: {new Date(expense.dueDate).toLocaleDateString()}
+            Due Date: {new Date(expense.dueDate).toLocaleDateString()} <br />
+            Amount: ${expense.amount.toFixed(2)} 
             {isAuthenticated && (
               <>
                 <button onClick={() => handleEdit(expense._id, expense)}>Edit</button>
