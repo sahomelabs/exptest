@@ -16,6 +16,8 @@ import HomePage from './Components/HomePage/HomePage';
 import EditIncomeForm from './EditIncome/EditIncomeForm';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import HowItWorks from './Pages/How/howItWorks';
+import ForgotPassword from './Components/ForgetPass/ForgetPassword';
+import ResetPassword from './Components/ForgetPass/ResetPassword';
 import './App.css';
 
 const App = () => {
@@ -101,6 +103,8 @@ const App = () => {
           <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/expenses" element={isAuthenticated ? <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense} /> : <Navigate to="/signin" />} />
           <Route path="/add-expense" element={isAuthenticated ? <ExpenseForm addExpense={addExpense} /> : <Navigate to="/signin" />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
         <Footer />
       </div>
