@@ -3,7 +3,10 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const User = require('../../Models/User');
+const sendEmail = require('./emailService');
+
 
 // Middleware to verify token
 const verifyToken = (req, res, next) => {
@@ -72,5 +75,61 @@ router.post('/signin', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+// Request password reset
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    user.resetToken = resetToken;
+    user.resetTokenExpiration = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+    // Send email
+    const subject = 'Password Reset Request';
+    const text = `Click the following link to reset your password: ${resetLink}`;
+    await sendEmail(email, subject, text);
+
+    res.status(200).json({ message: 'Password reset link sent' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to request password reset' });
+  }
+});
+
+// Reset password
+router.post('/reset-password', async (req, res) => {
+  const { token, password } = req.body;
+
+  try {
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpiration: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Token is invalid or has expired' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    user.resetToken = undefined;
+    user.resetTokenExpiration = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Password has been reset' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to reset password' });
+  }
+});
+
 
 module.exports = router;
