@@ -64,7 +64,7 @@ const ExpenseList = ({isAuthenticated}) => {
 
   return (
     <div className="expense-list">
-      <h2>Expenses</h2>
+      <h2>Expenses Dashboard</h2>
       <ul>
         {expenses.map((expense) => (
           <li key={expense._id}>
@@ -74,10 +74,10 @@ const ExpenseList = ({isAuthenticated}) => {
             Due Date: {new Date(expense.dueDate).toLocaleDateString()} <br />
             Amount: ${expense.amount.toFixed(2)} 
             {isAuthenticated && (
-              <>
-                <button onClick={() => handleEdit(expense._id, expense)}>Edit</button>
-                <button onClick={() => handleDelete(expense._id)}>Delete</button>
-              </>
+             <>
+             <button onClick={() => handleEdit(expense._id, expense)}>Edit</button>
+             <button onClick={() => handleDelete(expense._id)}>Delete</button>
+           </>
             )}
           </li>
         ))}
