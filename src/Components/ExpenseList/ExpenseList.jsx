@@ -118,8 +118,14 @@ const ExpenseList = ({ isAuthenticated }) => {
                   ))}
                 </select>
                 <input type="number" name="amount" value={editForm.amount} onChange={handleEditChange} />
-                <input type="date" name="date" value={editForm.date} onChange={handleEditChange} />
-                <input type="date" name="dueDate" value={editForm.dueDate} onChange={handleEditChange} />
+                <label>
+                  Current Date Expense Added: {new Date(expense.date).toLocaleDateString()}
+                  <input type="date" name="date" value={editForm.date} onChange={handleEditChange} />
+                </label>
+                <label>
+                  Current Due Date: {new Date(expense.dueDate).toLocaleDateString()}
+                  <input type="date" name="dueDate" value={editForm.dueDate} onChange={handleEditChange} />
+                </label>
                 <button type="submit">Save</button>
                 <button type="button" onClick={() => setIsEditing(null)}>Cancel</button>
               </form>
