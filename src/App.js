@@ -85,7 +85,7 @@ const App = () => {
                 <IncomeForm setIncome={setIncome} />
                 <EditIncomeForm userId={userId} currentIncome={income} onUpdateIncome={handleUpdateIncome} /> 
                 <ExpenseForm addExpense={addExpense} />
-                <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense} />
+                <ExpenseList isAuthenticated={isAuthenticated} />
                 <Summary income={income} expenses={expenses} />
               </>
             ) : (

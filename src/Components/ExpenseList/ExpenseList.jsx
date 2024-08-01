@@ -36,6 +36,8 @@ const ExpenseList = ({isAuthenticated}) => {
 
 
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this expense?');
+    if (confirmDelete) {
     try {
       const token = localStorage.getItem('token');
       await fetch(`${process.env.REACT_APP_API_URL}/api/expenses/${id}`, {
@@ -48,6 +50,7 @@ const ExpenseList = ({isAuthenticated}) => {
       setExpenses(expenses.filter(expense => expense._id !== id));
     } catch (error) {
       console.error('Error deleting expense:', error);
+      }
     }
   };
 
