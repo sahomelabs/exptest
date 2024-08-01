@@ -1,9 +1,15 @@
 //IncomeForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './IncomeForm.css';
 
 const IncomeForm = ({ setIncome, initialIncome }) => {
-  const [incomeInput, setIncomeInput] = useState('initialIncome');
+  const [incomeInput, setIncomeInput] = useState('');
+
+  useEffect(() => {
+    if (initialIncome !== undefined) {
+      setIncomeInput(initialIncome);
+    }
+  }, [initialIncome]);
 
   const handleChange = (e) => {
     setIncomeInput(e.target.value);
@@ -12,7 +18,6 @@ const IncomeForm = ({ setIncome, initialIncome }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIncome(parseFloat(incomeInput));
-    // setIncomeInput('');
   };
 
   return (
@@ -24,7 +29,7 @@ const IncomeForm = ({ setIncome, initialIncome }) => {
         placeholder="Enter your income" 
         required 
       />
-      <button type="submit">Add Income</button>
+      <button type="submit">{initialIncome ? 'Update Income' : 'Add Income'}</button>
     </form>
   );
 };

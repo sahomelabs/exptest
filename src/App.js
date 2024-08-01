@@ -82,7 +82,7 @@ const App = () => {
           <Route path="/" element={
             isAuthenticated ? (
               <>
-                <IncomeForm setIncome={setIncome} />
+                <IncomeForm setIncome={setIncome} initialIncome={income}/>
                 <EditIncomeForm userId={userId} currentIncome={income} onUpdateIncome={handleUpdateIncome} /> 
                 <ExpenseForm addExpense={addExpense} />
                 <ExpenseList isAuthenticated={isAuthenticated} />
