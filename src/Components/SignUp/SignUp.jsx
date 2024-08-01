@@ -10,6 +10,11 @@ const SignUp = () => {
   const navigate = useNavigate();
 
 
+  const validateEmail = (email) => {
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailReg.test(email);
+  };
+
   const validatePassword = (password) => {
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
@@ -21,6 +26,12 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError ('Passwords do not match');

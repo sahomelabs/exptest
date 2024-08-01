@@ -1,5 +1,4 @@
 //IncomeForm.jsx
-
 import React, { useState } from 'react';
 import './IncomeForm.css';
 
