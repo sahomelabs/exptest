@@ -4,6 +4,8 @@ import './ExpenseList.css';
 
 const ExpenseList = ({isAuthenticated}) => {
   const [expenses, setExpenses] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -18,6 +20,7 @@ const ExpenseList = ({isAuthenticated}) => {
 
         const data = await response.json();
         setExpenses(data);
+        calculateTotal(data);
       } catch (error) {
         console.error('Error fetching expenses:', error);
       }
@@ -25,6 +28,11 @@ const ExpenseList = ({isAuthenticated}) => {
 
     fetchExpenses();
   }, []);
+
+  const calculateTotal = (expenses) => {
+    const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    setTotalAmount(total);
+  };
 
 
   const handleDelete = async (id) => {
@@ -82,6 +90,7 @@ const ExpenseList = ({isAuthenticated}) => {
           </li>
         ))}
       </ul>
+      <h3>Total Expense Amount: ${totalAmount.toFixed(2)}</h3>
     </div>
   );
 };
