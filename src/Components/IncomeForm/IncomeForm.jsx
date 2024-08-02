@@ -1,16 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import './IncomeForm.css';
 
-const IncomeForm = ({ setIncome, userId }) => {
+const IncomeForm = ({ setIncome, userId, isAuthenticated }) => {
   const [incomeInput, setIncomeInput] = useState('');
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      console.error('User is not authenticated');
+      return;
+    }
+
     const fetchIncome = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`);
+        const token = localStorage.getItem('token'); // Retrieve the token from local storage or context
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+
         const data = await response.json();
         setIncomeInput(data.income || '');
         setIncome(data.income || 0);
@@ -20,7 +32,7 @@ const IncomeForm = ({ setIncome, userId }) => {
     };
 
     fetchIncome();
-  }, [userId, setIncome]);
+  }, [userId, setIncome, isAuthenticated]);
 
   const handleChange = (e) => {
     setIncomeInput(e.target.value);
@@ -28,14 +40,22 @@ const IncomeForm = ({ setIncome, userId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isAuthenticated) {
+      console.error('User is not authenticated');
+      return;
+    }
+
     const incomeValue = parseFloat(incomeInput);
     setIncome(incomeValue);
 
     try {
+      const token = localStorage.getItem('token'); // Retrieve the token from local storage or context
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ amount: incomeValue })
       });
@@ -60,7 +80,9 @@ const IncomeForm = ({ setIncome, userId }) => {
         placeholder="Enter your income" 
         required 
       />
-      <button type="submit">{incomeInput ? 'Update Income' : 'Add Income'}</button>
+      <button type="submit" disabled={!isAuthenticated}>
+        {incomeInput ? 'Update Income' : 'Add Income'}
+      </button>
     </form>
   );
 };

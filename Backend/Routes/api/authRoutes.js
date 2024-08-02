@@ -1,4 +1,3 @@
-// Backend/Routes/api/authRoutes.js
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -6,25 +5,12 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../../Models/User');
 const sendEmail = require('./emailService');
-
-
-// Middleware to verify token
-const verifyToken = (req, res, next) => {
-  const token = req.header('Authorization')?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'Access Denied' });
-  try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified;
-    next();
-  } catch (err) {
-    res.status(400).json({ message: 'Invalid Token' });
-  }
-};
+const { authenticateToken } = require('../../Middleware/authMiddleware'); // Adjust path to your auth middleware
 
 // User signup
 router.post('/signup', async (req, res) => {
   const { email, password } = req.body;
-  if ( !email || !password) {
+  if (!email || !password) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
@@ -62,7 +48,6 @@ router.post('/signin', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Verify that JWT_SECRET is available
     if (!process.env.JWT_SECRET) {
       console.error('JWT_SECRET is not defined');
       return res.status(500).json({ message: 'Server configuration error' });
@@ -86,7 +71,6 @@ router.post('/forgot-password', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Generate reset token
     const resetToken = crypto.randomBytes(32).toString('hex');
     user.resetToken = resetToken;
     user.resetTokenExpiration = Date.now() + 3600000; // 1 hour
@@ -94,7 +78,6 @@ router.post('/forgot-password', async (req, res) => {
 
     const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    // Send email
     const subject = 'Password Reset Request';
     const text = `Click the following link to reset your password: ${resetLink}`;
     await sendEmail(email, subject, text);
@@ -130,6 +113,5 @@ router.post('/reset-password', async (req, res) => {
     res.status(500).json({ message: 'Failed to reset password' });
   }
 });
-
 
 module.exports = router;

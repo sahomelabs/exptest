@@ -200,4 +200,3 @@ const ExpenseList = ({ isAuthenticated }) => {
 };
 
 export default ExpenseList;
-

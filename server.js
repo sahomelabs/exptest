@@ -17,12 +17,10 @@ const authRoutes = require('./Backend/Routes/api/authRoutes'); // Adjust path if
 const expenseRoutes = require('./Backend/Routes/api/expenseRoutes'); // Adjust path if needed
 const incomeRoutes = require('./Backend/Routes/api/incomeRoutes'); // Adjust the path as needed
 
-
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/income', incomeRoutes);
-
 
 // MongoDB connection
 const uri = process.env.MONGODB_URI;
