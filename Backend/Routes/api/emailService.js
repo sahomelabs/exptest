@@ -1,6 +1,6 @@
 // emailService.js
 const AWS = require('aws-sdk');
-const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, EMAIL_FROM } = require('./config');
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, EMAIL_FROM } = process.env;
 
 AWS.config.update({
   accessKeyId: AWS_ACCESS_KEY_ID,
