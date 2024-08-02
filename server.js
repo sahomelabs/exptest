@@ -8,8 +8,15 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Configure CORS to allow requests from the frontend domain
+const corsOptions = {
+  origin: 'https://grow--wise.com', // Replace with your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions)); // Apply CORS configuration
 app.use(bodyParser.json());
 
 // Import routes
