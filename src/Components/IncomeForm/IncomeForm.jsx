@@ -1,31 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import './IncomeForm.css';
 
-const IncomeForm = ({ setIncome, initialIncome }) => {
+const IncomeForm = ({ setIncome, userId }) => {
   const [incomeInput, setIncomeInput] = useState('');
 
   useEffect(() => {
-    if (initialIncome !== undefined) {
-      setIncomeInput(initialIncome);
-    } else {
-      // Load income from local storage if it exists
-      const savedIncome = localStorage.getItem('income');
-      if (savedIncome) {
-        setIncomeInput(savedIncome);
+    const fetchIncome = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`);
+        const data = await response.json();
+        setIncomeInput(data.income);
+        setIncome(data.income);
+      } catch (error) {
+        console.error('Error fetching income:', error);
       }
-    }
-  }, [initialIncome]);
+    };
+
+    fetchIncome();
+  }, [userId, setIncome]);
 
   const handleChange = (e) => {
     setIncomeInput(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const incomeValue = parseFloat(incomeInput);
     setIncome(incomeValue);
-    // Save income to local storage
-    localStorage.setItem('income', incomeValue);
+
+    try {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ income: incomeValue })
+      });
+    } catch (error) {
+      console.error('Error updating income:', error);
+    }
   };
 
   return (
@@ -37,7 +50,7 @@ const IncomeForm = ({ setIncome, initialIncome }) => {
         placeholder="Enter your income" 
         required 
       />
-      <button type="submit">{initialIncome ? 'Update Income' : 'Add Income'}</button>
+      <button type="submit">{incomeInput ? 'Update Income' : 'Add Income'}</button>
     </form>
   );
 };

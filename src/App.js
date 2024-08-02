@@ -13,7 +13,6 @@ import SignIn from './Components/SignIn/SignIn';
 import SignOut from './Components/SignOut/SignOut';
 import SignUp from './Components/SignUp/SignUp';
 import HomePage from './Components/HomePage/HomePage';
-import EditIncomeForm from './EditIncome/EditIncomeForm';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import HowItWorks from './Pages/How/howItWorks';
 import ForgotPassword from './Components/ForgetPass/ForgetPassword';
@@ -27,9 +26,7 @@ const App = () => {
   const [userEmail, setUserEmail] = useState('');
   const [userId, setUserId] = useState('');
 
-
   // Check if token exists in localStorage and update authentication state
- 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('email');
@@ -41,18 +38,25 @@ const App = () => {
     }
   }, []);
 
+  // Load income and expenses from localStorage
   useEffect(() => {
+    const savedIncome = localStorage.getItem('income');
+    if (savedIncome) {
+      setIncome(parseFloat(savedIncome));
+    }
     const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
     setExpenses(savedExpenses);
   }, []);
 
+  // Save income and expenses to localStorage
   useEffect(() => {
+    localStorage.setItem('income', income);
     localStorage.setItem('expenses', JSON.stringify(expenses));
     if (isAuthenticated) {
       // backend save logic
       console.log('Saving data to backend...', expenses);
     }
-  }, [expenses, isAuthenticated]);
+  }, [income, expenses, isAuthenticated]);
 
   const addExpense = (expense) => {
     setExpenses([...expenses, expense]);
@@ -68,7 +72,6 @@ const App = () => {
     setExpenses(updatedExpenses);
   };
 
-
   const handleUpdateIncome = (updatedIncome) => {
     setIncome(updatedIncome);
   };
@@ -82,8 +85,7 @@ const App = () => {
           <Route path="/" element={
             isAuthenticated ? (
               <>
-                <IncomeForm setIncome={setIncome} initialIncome={income}/>
-                <EditIncomeForm userId={userId} currentIncome={income} onUpdateIncome={handleUpdateIncome} /> 
+                <IncomeForm setIncome={setIncome} initialIncome={income} />
                 <ExpenseForm addExpense={addExpense} />
                 <ExpenseList isAuthenticated={isAuthenticated} />
                 <Summary income={income} expenses={expenses} />
@@ -92,10 +94,9 @@ const App = () => {
               <HomePage />
             )
           } />
-
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
-          <Route path="/about-us" element={<AboutUs/>} />
+          <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/signin" element={isAuthenticated ? <Navigate to="/" /> : <SignIn setIsAuthenticated={setIsAuthenticated} />} />

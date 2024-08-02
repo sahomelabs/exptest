@@ -20,4 +20,19 @@ const updateUserIncome = async (req, res) => {
   }
 };
 
-module.exports = { updateUserIncome };
+const getUserIncome = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ income: user.income });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred while retrieving income', error });
+  }
+};
+
+module.exports = { updateUserIncome, getUserIncome };
