@@ -8,9 +8,12 @@ const IncomeForm = ({ setIncome, userId }) => {
     const fetchIncome = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
-        setIncomeInput(data.income);
-        setIncome(data.income);
+        setIncomeInput(data.income || '');
+        setIncome(data.income || 0);
       } catch (error) {
         console.error('Error fetching income:', error);
       }
@@ -29,13 +32,20 @@ const IncomeForm = ({ setIncome, userId }) => {
     setIncome(incomeValue);
 
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ income: incomeValue })
+        body: JSON.stringify({ amount: incomeValue })
       });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('Income updated:', data);
     } catch (error) {
       console.error('Error updating income:', error);
     }

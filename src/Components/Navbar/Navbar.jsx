@@ -15,7 +15,6 @@ const Navbar = ({ isAuthenticated, userEmail  }) => {
         {isAuthenticated ? (
           <>
           
-            {/* <li><Link to="/">Home</Link></li> */}
             <li><Link to="/expenses">Dashboard</Link></li>
             <li><Link to="/">Add Expense</Link></li>
             <li>Welcome, {userEmail ? userEmail.split('@')[0] : 'User'}!</li>

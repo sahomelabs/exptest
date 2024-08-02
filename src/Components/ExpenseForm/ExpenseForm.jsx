@@ -59,16 +59,16 @@ const ExpenseForm = ({ addExpense }) => {
       
       <select name="categoryGroups" value={expense.categoryGroups} onChange={handleChange} required>
         <option value="">Select Category Group</option>
-        <option value="HOUSING">Housing</option>
-        <option value="FOOD">Food</option>
-        <option value="CREDIT CARD">Credit Card</option>
-        <option value="TRANSPORT">Transportation</option>
-        <option value="PAY-IN-4">PayIn4</option>
-        <option value="ENTERTAINMENT">Entertainment</option>
+        <option value="Housing">Housing</option>
+        <option value="Food">Food</option>
+        <option value="CreditCard">CreditCard</option>
+        <option value="Transportation">Transportation</option>
+        <option value="Pay-In-4">PayIn4</option>
+        <option value="Entertainment">Entertainment</option>
       </select>
       <select name="categories" value={expense.categories} onChange={handleChange} required>
         <option value="">Select Category</option>
-        {expense.categoryGroups === 'HOUSING' && (
+        {expense.categoryGroups === 'Housing' && (
           <>
             <option value="Mortgage">Mortgage</option>
             <option value="Rent">Rent</option>
@@ -84,14 +84,14 @@ const ExpenseForm = ({ addExpense }) => {
             <option value="Other">Other</option>
           </>
         )}
-        {expense.categoryGroups === 'FOOD' && (
+        {expense.categoryGroups === 'Food' && (
           <>
             <option value="Food and Drink">Food and Drink</option>
             <option value="Dining out">Dining out</option>
             <option value="Other">Other</option>
           </>
         )}
-        {expense.categoryGroups === 'Credit Card' && (
+        {expense.categoryGroups === 'CreditCard' && (
           <>
             <option value="Capital One">Capital One</option>
             <option value="Bank of America">Bank of America</option>
@@ -104,7 +104,7 @@ const ExpenseForm = ({ addExpense }) => {
             <option value="Chase Business">Chase Business</option>
           </>
         )}
-        {expense.categoryGroups === 'TRANSPORT' && (
+        {expense.categoryGroups === 'Transportation' && (
           <>
             <option value="Auto loan">Auto loan</option>
             <option value="Car Insurance">Car Insurance</option>
@@ -115,7 +115,7 @@ const ExpenseForm = ({ addExpense }) => {
             <option value="Others">Others</option>
           </>
         )}
-        {expense.categoryGroups === 'PAY-IN-4' && (
+        {expense.categoryGroups === 'Pay-In-4' && (
           <>
             <option value="Affirm">Affirm</option>
             <option value="Klarna">Klarna</option>
@@ -124,7 +124,7 @@ const ExpenseForm = ({ addExpense }) => {
             <option value="Other">Other</option>
           </>
         )}
-        {expense.categoryGroups === 'ENTERTAINMENT' && (
+        {expense.categoryGroups === 'Entertainment' && (
           <>
             <option value="Netflix">Netflix</option>
             <option value="Hulu">Hulu</option>

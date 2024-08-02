@@ -4,7 +4,6 @@ import Navbar from './Components/Navbar/Navbar';
 import ExpenseForm from './Components/ExpenseForm/ExpenseForm';
 import IncomeForm from './Components/IncomeForm/IncomeForm';
 import ExpenseList from './Components/ExpenseList/ExpenseList';
-import Summary from './Components/Summary/Summary';
 import Footer from './Components/Footer/Footer';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import TermsOfUse from './Pages/TermsofUse/TermsOfUse';
@@ -26,7 +25,6 @@ const App = () => {
   const [userEmail, setUserEmail] = useState('');
   const [userId, setUserId] = useState('');
 
-  // Check if token exists in localStorage and update authentication state
   useEffect(() => {
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('email');
@@ -38,17 +36,22 @@ const App = () => {
     }
   }, []);
 
-  // Load income and expenses from localStorage
   useEffect(() => {
-    const savedIncome = localStorage.getItem('income');
-    if (savedIncome) {
-      setIncome(parseFloat(savedIncome));
-    }
-    const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
-    setExpenses(savedExpenses);
-  }, []);
+    const fetchIncome = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/income/${userId}`);
+          const data = await response.json();
+          setIncome(data.income);
+        } catch (error) {
+          console.error('Error fetching income:', error);
+        }
+      }
+    };
 
-  // Save income and expenses to localStorage
+    fetchIncome();
+  }, [userId]);
+
   useEffect(() => {
     localStorage.setItem('income', income);
     localStorage.setItem('expenses', JSON.stringify(expenses));
@@ -72,10 +75,6 @@ const App = () => {
     setExpenses(updatedExpenses);
   };
 
-  const handleUpdateIncome = (updatedIncome) => {
-    setIncome(updatedIncome);
-  };
-
   return (
     <Router>
       <Navbar isAuthenticated={isAuthenticated} userEmail={userEmail} />
@@ -85,10 +84,16 @@ const App = () => {
           <Route path="/" element={
             isAuthenticated ? (
               <>
-                <IncomeForm setIncome={setIncome} initialIncome={income} />
+                <IncomeForm setIncome={setIncome} userId={userId} />
                 <ExpenseForm addExpense={addExpense} />
-                <ExpenseList isAuthenticated={isAuthenticated} />
-                <Summary income={income} expenses={expenses} />
+                <ExpenseList 
+                  isAuthenticated={isAuthenticated} 
+                  userId={userId} 
+                  expenses={expenses} 
+                  income={income}
+                  editExpense={editExpense}
+                  deleteExpense={deleteExpense}
+                />
               </>
             ) : (
               <HomePage />
@@ -102,7 +107,7 @@ const App = () => {
           <Route path="/signin" element={isAuthenticated ? <Navigate to="/" /> : <SignIn setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signout" element={<SignOut setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/expenses" element={isAuthenticated ? <ExpenseList expenses={expenses} editExpense={editExpense} deleteExpense={deleteExpense} /> : <Navigate to="/signin" />} />
+          <Route path="/expenses" element={isAuthenticated ? <ExpenseList expenses={expenses} income={income} editExpense={editExpense} deleteExpense={deleteExpense} /> : <Navigate to="/signin" />} />
           <Route path="/add-expense" element={isAuthenticated ? <ExpenseForm addExpense={addExpense} /> : <Navigate to="/signin" />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
