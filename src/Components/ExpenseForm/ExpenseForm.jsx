@@ -1,19 +1,17 @@
 // src/components/ExpenseForm.jsx
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './ExpenseForm.css';
 
 const ExpenseForm = ({ addExpense }) => {
   const [expense, setExpense] = useState({
     amount: '',
-    categoryGroup: '',
-    category: '',
+    categoryGroups: '',
+    categories: '',
     date: '',
     dueDate: '',
   });
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setExpense({ ...expense, [e.target.name]: e.target.value });
@@ -40,8 +38,8 @@ const ExpenseForm = ({ addExpense }) => {
         addExpense(newExpense);
         setExpense({
           amount: '',
-          categoryGroup: '',
-          category: '',
+          categoryGroups: '',
+          categories: '',
           date: '',
           dueDate: '',
         });
@@ -59,18 +57,18 @@ const ExpenseForm = ({ addExpense }) => {
     <form onSubmit={handleSubmit}>
       <h2>Add Expense</h2>
       
-      <select name="categoryGroup" value={expense.categoryGroup} onChange={handleChange} required>
+      <select name="categoryGroups" value={expense.categoryGroups} onChange={handleChange} required>
         <option value="">Select Category Group</option>
-        <option value="HOUSING">HOUSING</option>
-        <option value="FOOD">FOOD</option>
-        <option value="CREDIT CARD">CREDIT CARD</option>
-        <option value="TRANSPORT">TRANSPORT</option>
-        <option value="PAY-IN-4">PAY-IN-4</option>
-        <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+        <option value="HOUSING">Housing</option>
+        <option value="FOOD">Food</option>
+        <option value="CREDIT CARD">Credit Card</option>
+        <option value="TRANSPORT">Transportation</option>
+        <option value="PAY-IN-4">PayIn4</option>
+        <option value="ENTERTAINMENT">Entertainment</option>
       </select>
-      <select name="category" value={expense.category} onChange={handleChange} required>
+      <select name="categories" value={expense.categories} onChange={handleChange} required>
         <option value="">Select Category</option>
-        {expense.categoryGroup === 'HOUSING' && (
+        {expense.categoryGroups === 'HOUSING' && (
           <>
             <option value="Mortgage">Mortgage</option>
             <option value="Rent">Rent</option>
@@ -86,14 +84,14 @@ const ExpenseForm = ({ addExpense }) => {
             <option value="Other">Other</option>
           </>
         )}
-        {expense.categoryGroup === 'FOOD' && (
+        {expense.categoryGroups === 'FOOD' && (
           <>
             <option value="Food and Drink">Food and Drink</option>
             <option value="Dining out">Dining out</option>
             <option value="Other">Other</option>
           </>
         )}
-        {expense.categoryGroup === 'CREDIT CARD' && (
+        {expense.categoryGroups === 'Credit Card' && (
           <>
             <option value="Capital One">Capital One</option>
             <option value="Bank of America">Bank of America</option>
@@ -106,7 +104,7 @@ const ExpenseForm = ({ addExpense }) => {
             <option value="Chase Business">Chase Business</option>
           </>
         )}
-        {expense.categoryGroup === 'TRANSPORT' && (
+        {expense.categoryGroups === 'TRANSPORT' && (
           <>
             <option value="Auto loan">Auto loan</option>
             <option value="Car Insurance">Car Insurance</option>
@@ -117,7 +115,7 @@ const ExpenseForm = ({ addExpense }) => {
             <option value="Others">Others</option>
           </>
         )}
-        {expense.categoryGroup === 'PAY-IN-4' && (
+        {expense.categoryGroups === 'PAY-IN-4' && (
           <>
             <option value="Affirm">Affirm</option>
             <option value="Klarna">Klarna</option>
@@ -126,7 +124,7 @@ const ExpenseForm = ({ addExpense }) => {
             <option value="Other">Other</option>
           </>
         )}
-        {expense.categoryGroup === 'ENTERTAINMENT' && (
+        {expense.categoryGroups === 'ENTERTAINMENT' && (
           <>
             <option value="Netflix">Netflix</option>
             <option value="Hulu">Hulu</option>
@@ -140,12 +138,21 @@ const ExpenseForm = ({ addExpense }) => {
           </>
         )}
       </select>
-      <div className="amount-input-container">
+    <div className="amount-input-container">
         <input type="number" name="amount" value={expense.amount} onChange={handleChange} placeholder="Amount" required className="amount-input" />
       </div>
-      <input type="date" name="date" value={expense.date} onChange={handleChange} required />
-      <input type="date" name="dueDate" value={expense.dueDate} onChange={handleChange} required />
+      <div className="date-inputs">
+        <div className="date-input-container">
+          <label htmlFor="date">Date Added</label>
+          <input id="date" type="date" name="date" value={expense.date} onChange={handleChange} required />
+        </div>
+        <div className="date-input-container">
+          <label htmlFor="dueDate">Due Date</label>
+          <input id="dueDate" type="date" name="dueDate" value={expense.dueDate} onChange={handleChange} required />
+        </div>
+      </div>
       <button type="submit">Add Expense</button>
+      {error && <div className="error">{error}</div>}
     </form>
   );
 };

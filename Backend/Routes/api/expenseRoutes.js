@@ -17,8 +17,8 @@ router.get('/:userId', verifyToken, async (req, res) => {
 
 // Add a new expense
 router.post('/', verifyToken, async (req, res) => {
-  const { userId, name, amount, categoryGroup, category, date, dueDate } = req.body;
-  const expense = new Expense({ name, amount, categoryGroup, category, date, dueDate });
+  const { userId, name, amount, categoryGroups, categories, date, dueDate } = req.body;
+  const expense = new Expense({ name, amount, categoryGroups, categories, date, dueDate });
 
   try {
     const savedExpense = await expense.save();

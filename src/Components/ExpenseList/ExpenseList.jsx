@@ -7,19 +7,21 @@ const ExpenseList = ({ isAuthenticated }) => {
   const [expenses, setExpenses] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [isEditing, setIsEditing] = useState(null);
-  const [editForm, setEditForm] = useState({ categoryGroup: '', category: '', amount: '', date: '', dueDate: '' });
+  const [editForm, setEditForm] = useState({ categoryGroups: '', categories: '', amount: '', date: '', dueDate: '' });
 
-  const categoryGroups = ['Housing', 'Transportation', 'Food', 'Utilities', 'Insurance', 'Healthcare', 'Savings', 'Entertainment', 'PayIn4'];
+  const categoryGroups = ['Housing', 'CreditCard', 'Transportation', 'Food', 'Utilities', 'Insurance', 'Healthcare', 'Savings', 'Entertainment', 'PayIn4'];
   const categories = {
-    Housing: ['Rent', 'Mortgage', 'Property Tax',  'Home Phone Bill', 'Gas', 'Water', 'Sewer', 'Supplies', 'Other'],
+    Housing: ['Rent', 'Mortgage', 'Property Tax', 'Home Phone Bill', 'Gas', 'Water', 'Sewer', 'Supplies', 'Other'],
+    CreditCard: [ 'Capital One', 'Bank of America', 'Bank of America', 'Wells Fargo', 'Citi','American Express', 'Discover',
+       'Credit One', 'Credit One', 'Chase', 'Chase Business','Chase Business'],
     Transportation: ['Car Payment', 'Fuel', 'Public Transport', 'Other'],
     Food: ['Groceries', 'Dining Out'],
-    Utilities: ['Electricity', 'Internet', 'Internet/Cable', 'Other' ],
-    Insurance: ['Health Insurance', 'Car Insurance', 'life Insurance', 'Other'],
+    Utilities: ['Electricity', 'Internet', 'Internet/Cable', 'Other'],
+    Insurance: ['Health Insurance', 'Car Insurance', 'Life Insurance', 'Other'],
     Healthcare: ['Doctor', 'Pharmacy', 'Other'],
     Savings: ['Emergency Fund', 'Retirement', 'Other'],
     Entertainment: ['Movies', 'Concerts', 'Other'],
-    PayIn4:['Affirm', 'Klarna', 'Afterpay', 'PayPal-Pay-In-4', 'Splitit', 'Sezzle', 'Zip', 'Other' ]
+    PayIn4: ['Affirm', 'Klarna', 'Afterpay', 'PayPal-Pay-In-4', 'Splitit', 'Sezzle', 'Zip', 'Other']
   };
 
   useEffect(() => {
@@ -107,23 +109,23 @@ const ExpenseList = ({ isAuthenticated }) => {
           <li key={expense._id}>
             {isEditing === expense._id ? (
               <form onSubmit={handleEditSubmit}>
-                <select name="categoryGroup" value={editForm.categoryGroup} onChange={handleEditChange}>
+                <select name="categoryGroups" value={editForm.categoryGroups} onChange={handleEditChange}>
                   {categoryGroups.map(group => (
                     <option key={group} value={group}>{group}</option>
                   ))}
                 </select>
-                <select name="category" value={editForm.category} onChange={handleEditChange}>
-                  {categories[editForm.categoryGroup]?.map(category => (
-                    <option key={category} value={category}>{category}</option>
+                <select name="categories" value={editForm.categories} onChange={handleEditChange}>
+                  {categories[editForm.categoryGroups]?.map(categories => (
+                    <option key={categories} value={categories}>{categories}</option>
                   ))}
                 </select>
                 <input type="number" name="amount" value={editForm.amount} onChange={handleEditChange} />
                 <label>
-                  Current Date Expense Added: {new Date(expense.date).toLocaleDateString()}
+                  Date Added: {new Date(expense.date).toLocaleDateString()}
                   <input type="date" name="date" value={editForm.date} onChange={handleEditChange} />
                 </label>
                 <label>
-                  Current Due Date: {new Date(expense.dueDate).toLocaleDateString()}
+                  Due Date: {new Date(expense.dueDate).toLocaleDateString()}
                   <input type="date" name="dueDate" value={editForm.dueDate} onChange={handleEditChange} />
                 </label>
                 <button type="submit">Save</button>
@@ -131,11 +133,11 @@ const ExpenseList = ({ isAuthenticated }) => {
               </form>
             ) : (
               <>
-                Category Group: {expense.categoryGroup} <br />
-                Category: {expense.category} <br />
-                Date: {new Date(expense.date).toLocaleDateString()} <br />
-                Due Date: {new Date(expense.dueDate).toLocaleDateString()} <br />
-                Amount: ${expense.amount.toFixed(2)}
+                <div>Category Group: {expense.categoryGroups}</div>
+                <div>Category: {expense.categories}</div>
+                <div>Amount: ${expense.amount.toFixed(2)}</div>
+                <div>Date Added: {new Date(expense.date).toLocaleDateString()}</div>
+                <div>Due Date: {new Date(expense.dueDate).toLocaleDateString()}</div>
                 {isAuthenticated && (
                   <>
                     <button onClick={() => handleEditClick(expense)}>Edit</button>

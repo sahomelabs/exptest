@@ -1,4 +1,3 @@
-//IncomeForm.jsx
 import React, { useState, useEffect } from 'react';
 import './IncomeForm.css';
 
@@ -8,6 +7,12 @@ const IncomeForm = ({ setIncome, initialIncome }) => {
   useEffect(() => {
     if (initialIncome !== undefined) {
       setIncomeInput(initialIncome);
+    } else {
+      // Load income from local storage if it exists
+      const savedIncome = localStorage.getItem('income');
+      if (savedIncome) {
+        setIncomeInput(savedIncome);
+      }
     }
   }, [initialIncome]);
 
@@ -17,7 +22,10 @@ const IncomeForm = ({ setIncome, initialIncome }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIncome(parseFloat(incomeInput));
+    const incomeValue = parseFloat(incomeInput);
+    setIncome(incomeValue);
+    // Save income to local storage
+    localStorage.setItem('income', incomeValue);
   };
 
   return (

@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 
 const expenseSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
-  categoryGroup: { type: String, required: true },
-  category: { type: String, required: true },
+  categoryGroups: { type: String, required: true },
+  categories: { type: String, required: true },
   date: { type: Date, required: true },
   dueDate: { type: Date, required: true },
   userID: {

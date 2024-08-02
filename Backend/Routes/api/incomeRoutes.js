@@ -21,6 +21,9 @@ router.put('/:id', async (req, res) => {
   const { amount } = req.body;
   try {
     const updatedIncome = await Income.findByIdAndUpdate(id, { amount }, { new: true });
+    if (!updatedIncome) {
+      return res.status(404).json({ message: 'Income not found' });
+    }
     res.status(200).json(updatedIncome);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -32,6 +35,20 @@ router.get('/', async (req, res) => {
   try {
     const incomes = await Income.find();
     res.status(200).json(incomes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get income by ID
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const income = await Income.findById(id);
+    if (!income) {
+      return res.status(404).json({ message: 'Income not found' });
+    }
+    res.status(200).json(income);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

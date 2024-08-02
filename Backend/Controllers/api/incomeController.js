@@ -1,5 +1,5 @@
-// controllers/incomeController.js or similar
-const User = require('../models/User'); // Adjust the path as needed
+// controllers/incomeController.js
+const User = require('../Models/User'); // Adjust the path as needed
 
 const updateUserIncome = async (req, res) => {
   const { userId } = req.params;
@@ -11,7 +11,7 @@ const updateUserIncome = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.income = income;
+    user.income = income; // Ensure this field exists in your User model
     await user.save();
 
     res.json({ income: user.income });
