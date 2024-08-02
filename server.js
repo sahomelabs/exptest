@@ -15,12 +15,17 @@ app.use(bodyParser.json());
 // Import routes
 const authRoutes = require('./Backend/Routes/api/authRoutes'); // Adjust path if needed
 const expenseRoutes = require('./Backend/Routes/api/expenseRoutes'); // Adjust path if needed
-const incomeRoutes = require('./Backend/Routes/api/incomeRoutes'); // Adjust the path as needed
+const incomeRoutes = require('./Backend/Routes/api/incomeRoutes'); // Adjust path if needed
 
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/income', incomeRoutes);
+
+// Health check route
+app.get('/health', (req, res) => {
+  res.send('Server is up and running');
+});
 
 // MongoDB connection
 const uri = process.env.MONGODB_URI;
@@ -37,5 +42,5 @@ mongoose.connect(uri, {
     });
   })
   .catch(err => {
-    console.error('Failed to connect to MongoDB:', err);
+    console.error('Error connecting to MongoDB:', err);
   });
