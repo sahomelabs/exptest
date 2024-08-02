@@ -139,10 +139,12 @@ const ExpenseList = ({ isAuthenticated }) => {
                 <div>Date Added: {new Date(expense.date).toLocaleDateString()}</div>
                 <div>Due Date: {new Date(expense.dueDate).toLocaleDateString()}</div>
                 {isAuthenticated && (
-                  <>
+                 
+                 <div className='button-container'>
+                  
                     <button onClick={() => handleEditClick(expense)}>Edit</button>
                     <button onClick={() => handleDelete(expense._id)}>Delete</button>
-                  </>
+                  </div>
                 )}
               </>
             )}
